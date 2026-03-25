@@ -49,7 +49,8 @@ if (!MONGO_URI) {
 
 mongoose.connect(MONGO_URI, {
   family: 4,
-  serverSelectionTimeoutMS: 5000
+  serverSelectionTimeoutMS: 10000,
+  socketTimeoutMS: 45000
 })
 .then(() => {
   console.log("MongoDB Connected");

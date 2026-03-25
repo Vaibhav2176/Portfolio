@@ -1,0 +1,117 @@
+/* .container is defined here as it's shared across components */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-header {
+  margin-bottom: 3rem;
+  text-align: left;
+}
+
+.section-title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.section-line {
+  height: 4px;
+  width: 60px;
+  background: linear-gradient(90deg, var(--primary-neon), var(--secondary-neon));
+  border-radius: 2px;
+}
+
+.about-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: stretch;
+}
+
+.about-code-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(15, 23, 42, 0.7);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.about-code-block .terminal-header {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.8rem 1rem;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.file-name {
+  color: #94a3b8;
+  font-size: 0.85rem;
+  margin-left: 1rem;
+  font-family: var(--font-mono);
+}
+
+.code-content {
+  padding: 2rem;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #e2e8f0;
+}
+
+.indent-1 { margin-left: 2rem; }
+.indent-2 { margin-left: 4rem; }
+
+.property { color: #93c5fd; }
+.keyword { color: #ec4899; }
+.variable { color: #3b82f6; }
+.string { color: #60a5fa; }
+.function { color: #fbbf24; }
+
+.about-highlights {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  justify-content: space-between;
+}
+
+.developer-card {
+  padding: 1.5rem 2rem;
+  border-left: 4px solid var(--glass-border);
+  transition: all 0.3s ease;
+  background: linear-gradient(90deg, rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.4));
+}
+
+.developer-card:hover {
+  border-left-color: var(--primary-neon);
+  transform: translateX(10px);
+  background: linear-gradient(90deg, rgba(168, 85, 247, 0.1), rgba(15, 23, 42, 0.4));
+}
+
+.highlight-icon {
+  font-size: 2rem;
+  color: var(--primary-neon);
+  margin-bottom: 1rem;
+}
+
+.highlight-card h4 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+}
+
+.highlight-card p {
+  color: #94a3b8;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 992px) {
+  .about-content {
+    grid-template-columns: 1fr;
+  }
+}

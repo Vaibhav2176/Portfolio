@@ -23,6 +23,7 @@ const Contact = () => {
     setStatus({ type: '', message: '' });
 
     const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+    console.log("Connecting to:", API_URL);
     try {
       const response = await fetch(`${API_URL}/api/contact`, {
         method: 'POST',

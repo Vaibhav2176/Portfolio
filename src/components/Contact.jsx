@@ -22,8 +22,9 @@ const Contact = () => {
     setLoading(true);
     setStatus({ type: '', message: '' });
 
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
     try {
-      const response = await fetch('/api/contact', {
+      const response = await fetch(`${API_URL}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)

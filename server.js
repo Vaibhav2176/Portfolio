@@ -40,11 +40,19 @@ app.post('/api/contact', async (req, res) => {
 });
 
 // Database Connection
-mongoose.connect(process.env.MONGO_URI, {
-  family: 4 
+const MONGO_URI = process.env.MONGO_URI;
+
+if (!MONGO_URI) {
+  console.error("ERROR: MONGO_URI is missing in environment variables!");
+  process.exit(1);
+}
+
+mongoose.connect(MONGO_URI, {
+  family: 4,
+  serverSelectionTimeoutMS: 5000
 })
 .then(() => {
-  console.log("MongoDB Connected Successfully");
+  console.log("MongoDB Connected");
   app.listen(port, () => {
     console.log(`Backend Server running on port ${port}`);
   });

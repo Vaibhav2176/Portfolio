@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import handler from './api/contact.js';
+import mongoose from 'mongoose';
 
 dotenv.config();
 
@@ -38,6 +39,17 @@ app.post('/api/contact', async (req, res) => {
   await handler(req, res);
 });
 
-app.listen(port, () => {
-  console.log(`Backend Server running on port ${port}`);
+// Database Connection
+mongoose.connect(process.env.MONGO_URI, {
+  family: 4 
+})
+.then(() => {
+  console.log("MongoDB Connected Successfully");
+  app.listen(port, () => {
+    console.log(`Backend Server running on port ${port}`);
+  });
+})
+.catch(err => {
+  console.error("MongoDB Connection Error:", err);
+  process.exit(1);
 });

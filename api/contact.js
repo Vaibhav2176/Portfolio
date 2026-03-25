@@ -11,13 +11,7 @@ const contactSchema = new mongoose.Schema({
 
 const Contact = mongoose.models.Contact || mongoose.model('Contact', contactSchema);
 
-// MongoDB connection
-const connectDB = async () => {
-  if (mongoose.connection.readyState >= 1) return;
-  const uri = (process.env.MONGO_URI || process.env.MONGODB_URI || '').trim();
-  if (!uri) throw new Error('MONGO_URI or MONGODB_URI is missing in environment variables');
-  return mongoose.connect(uri);
-};
+// MongoDB connection logic removed; handled globally in server.js
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -31,8 +25,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    await connectDB();
-
     // 1. Save to MongoDB
     await Contact.create({ name, email, message });
 

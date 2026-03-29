@@ -11,7 +11,14 @@ const contactSchema = new mongoose.Schema({
 
 const Contact = mongoose.models.Contact || mongoose.model('Contact', contactSchema);
 
-// MongoDB connection logic removed; handled globally in server.js
+// 1. Initialize transporter OUTSIDE the handler to reuse connection pools
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  }
+});
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -25,17 +32,8 @@ export default async function handler(req, res) {
   }
 
   try {
-    // 1. Save to MongoDB
-    await Contact.create({ name, email, message });
-
-    // 2. Send Email Notification
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
-    });
+    // 2. Prepare both operations
+    const dbPromise = Contact.create({ name, email, message });
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
@@ -51,7 +49,10 @@ export default async function handler(req, res) {
       `
     };
 
-    await transporter.sendMail(mailOptions);
+    const mailPromise = transporter.sendMail(mailOptions);
+
+    // 3. Execute in parallel (Performance boost: takes only as long as the slowest operation)
+    await Promise.all([dbPromise, mailPromise]);
 
     return res.status(200).json({ success: true, message: 'Message sent successfully!' });
   } catch (error) {
@@ -60,7 +61,7 @@ export default async function handler(req, res) {
     return res.status(500).json({ 
       error: 'Backend Failure', 
       message: error.message,
-      step: error.stack.includes('transporter.sendMail') ? 'Sending Email' : 'Saving to Database'
+      step: error.stack && error.stack.includes('sendMail') ? 'Sending Email' : 'Saving to Database'
     });
   }
 }

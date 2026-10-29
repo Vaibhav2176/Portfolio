@@ -49,8 +49,9 @@ const GitHubHeatmap = ({
 
   // Build the 52/53-week calendar matrix
   const { weeks, monthLabels, computedTotal, computedActiveDays } = useMemo(() => {
-    // Generate dates from Oct 26, 2025 to Oct 25, 2026 (or today)
-    const endDate = new Date('2026-10-25T00:00:00Z');
+    // Generate dates: 52 weeks (364 days) up to today
+    const now = new Date();
+    const endDate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
     const startDate = new Date(endDate);
     startDate.setUTCDate(startDate.getUTCDate() - 364);
 
@@ -214,7 +215,7 @@ const GitHubHeatmap = ({
           <div className="gh-strip-pill">
             <FiGitCommit className="strip-icon text-emerald" aria-hidden="true" />
             <span className="strip-val">{totalCommits}</span>
-            <span className="strip-lbl">Total Commits (6 Repos)</span>
+            <span className="strip-lbl">Total Commits</span>
           </div>
           <div className="gh-strip-pill">
             <span className="strip-val">{effectiveActiveDays}</span>

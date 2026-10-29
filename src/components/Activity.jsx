@@ -41,14 +41,15 @@ const Activity = () => {
   // Fetch or retrieve cached GitHub public activity
   useEffect(() => {
     let isMounted = true;
-    const CACHE_KEY_GH = 'vaibhav_gh_data_v3';
-    const CACHE_KEY_GH_TIME = 'vaibhav_gh_time_v3';
-    const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour TTL
+    const CACHE_KEY_GH = 'vaibhav_gh_data_v4';
+    const CACHE_KEY_GH_TIME = 'vaibhav_gh_time_v4';
+    const CACHE_TTL_MS = 30 * 60 * 1000; // 30 minutes TTL aligned with edge caching
 
     const loadGitHubData = async () => {
+      let cachedData = null;
       try {
         const cachedTime = localStorage.getItem(CACHE_KEY_GH_TIME);
-        const cachedData = localStorage.getItem(CACHE_KEY_GH);
+        cachedData = localStorage.getItem(CACHE_KEY_GH);
 
         if (cachedTime && cachedData && Date.now() - Number(cachedTime) < CACHE_TTL_MS) {
           if (isMounted) {
@@ -65,21 +66,23 @@ const Activity = () => {
             const json = await res.json();
             if (json.status === 'live' || json.status === 'cached' || json.status === 'stale') {
               const apiData = json.data || {};
+              const hasLiveCalendar = apiData.activeCells && typeof apiData.activeCells === 'object' && Object.keys(apiData.activeCells).length > 0;
+
               const livePayload = {
                 ...initialGithub,
                 stats: {
                   ...initialGithub.stats,
-                  publicRepos: apiData.publicRepos || initialGithub.stats.publicRepos,
-                  totalContributions: apiData.totalContributions || initialGithub.stats.totalContributions,
-                  totalCommits: apiData.totalCommits || initialGithub.stats.totalCommits,
-                  activeDays: apiData.activeDays || initialGithub.stats.activeDays
+                  publicRepos: typeof apiData.publicRepos === 'number' ? apiData.publicRepos : initialGithub.stats.publicRepos,
+                  totalContributions: typeof apiData.totalContributions === 'number' ? apiData.totalContributions : initialGithub.stats.totalContributions,
+                  totalCommits: typeof apiData.totalCommits === 'number' ? apiData.totalCommits : initialGithub.stats.totalCommits,
+                  activeDays: typeof apiData.activeDays === 'number' ? apiData.activeDays : initialGithub.stats.activeDays
                 },
                 calendar: {
                   ...initialGithub.calendar,
-                  totalContributions: apiData.totalContributions || initialGithub.calendar.totalContributions,
-                  totalCommits: apiData.totalCommits || initialGithub.calendar.totalCommits,
-                  activeDays: apiData.activeDays || initialGithub.calendar.activeDays,
-                  activeCells: apiData.activeCells || initialGithub.calendar.activeCells
+                  totalContributions: typeof apiData.totalContributions === 'number' ? apiData.totalContributions : initialGithub.calendar.totalContributions,
+                  totalCommits: typeof apiData.totalCommits === 'number' ? apiData.totalCommits : initialGithub.calendar.totalCommits,
+                  activeDays: typeof apiData.activeDays === 'number' ? apiData.activeDays : initialGithub.calendar.activeDays,
+                  activeCells: hasLiveCalendar ? apiData.activeCells : initialGithub.calendar.activeCells
                 },
                 topRepositories: Array.isArray(apiData.repos) && apiData.repos.length > 0
                   ? apiData.repos
@@ -87,13 +90,20 @@ const Activity = () => {
               };
 
               if (isMounted) {
+                const isActuallyLive = (json.status === 'live') && (typeof apiData.totalContributions === 'number' || hasLiveCalendar);
+                const effectiveStatus = isActuallyLive ? 'live' : (json.status === 'cached' ? 'cached' : 'snapshot');
+
                 setGhData(livePayload);
-                setGhStatus(json.status === 'live' ? 'live' : 'cached');
-                try {
-                  localStorage.setItem(CACHE_KEY_GH, JSON.stringify(livePayload));
-                  localStorage.setItem(CACHE_KEY_GH_TIME, Date.now().toString());
-                } catch {
-                  // ignore quota
+                setGhStatus(effectiveStatus);
+
+                // Only cache when genuine contribution data is received or status is clean
+                if (isActuallyLive || json.status === 'cached') {
+                  try {
+                    localStorage.setItem(CACHE_KEY_GH, JSON.stringify(livePayload));
+                    localStorage.setItem(CACHE_KEY_GH_TIME, Date.now().toString());
+                  } catch {
+                    // ignore quota
+                  }
                 }
               }
               return;
@@ -148,20 +158,52 @@ const Activity = () => {
           };
 
           if (isMounted) {
-            setGhData(livePayload);
-            setGhStatus('live');
-            try {
-              localStorage.setItem(CACHE_KEY_GH, JSON.stringify(livePayload));
-              localStorage.setItem(CACHE_KEY_GH_TIME, Date.now().toString());
-            } catch {
-              // ignore quota
+            if (cachedData) {
+              try {
+                const parsed = JSON.parse(cachedData);
+                setGhData({
+                  ...parsed,
+                  stats: { ...parsed.stats, publicRepos: profile.public_repos || parsed.stats?.publicRepos || initialGithub.stats.publicRepos },
+                  topRepositories: repos.length > 0 ? repos : parsed.topRepositories
+                });
+                setGhStatus('cached');
+              } catch {
+                setGhData(livePayload);
+                setGhStatus('snapshot');
+              }
+            } else {
+              setGhData(livePayload);
+              setGhStatus('snapshot');
             }
           }
         } else {
-          if (isMounted) setGhStatus('snapshot');
+          // Fall back to last valid cache if available, else static snapshot
+          if (isMounted) {
+            if (cachedData) {
+              try {
+                setGhData(JSON.parse(cachedData));
+                setGhStatus('cached');
+              } catch {
+                setGhStatus('snapshot');
+              }
+            } else {
+              setGhStatus('snapshot');
+            }
+          }
         }
       } catch {
-        if (isMounted) setGhStatus('snapshot');
+        if (isMounted) {
+          if (cachedData) {
+            try {
+              setGhData(JSON.parse(cachedData));
+              setGhStatus('cached');
+            } catch {
+              setGhStatus('snapshot');
+            }
+          } else {
+            setGhStatus('snapshot');
+          }
+        }
       }
     };
 
@@ -408,7 +450,7 @@ const Activity = () => {
                   {ghData.stats?.totalCommits || 291} Commits
                 </span>
                 <span className="overview-metric-sub">
-                  Calculated across 6 public repositories
+                  Calculated across {ghData.stats?.publicRepos || 6} public repositories
                 </span>
               </div>
 

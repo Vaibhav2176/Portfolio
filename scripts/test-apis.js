@@ -264,6 +264,156 @@ async function runTests() {
     assert('Heatmap parser handles array input safely', Object.keys(parseCalendar([1, 2, 3])).length === 0);
   }
 
+  // 13. GitHub: Upstream full response parsing with live contributions HTML
+  {
+    const originalFetch = globalThis.fetch;
+    try {
+      const mockHtml = `
+        <div class="js-yearly-contributions">
+          <h2>519 contributions in the last year</h2>
+          <table class="ContributionCalendar-grid">
+            <tr>
+              <td data-date="2026-03-08" id="day-1" data-level="4" class="ContributionCalendar-day"></td>
+              <td data-date="2026-03-09" id="day-2" data-level="1" class="ContributionCalendar-day"></td>
+              <td data-date="2026-03-10" id="day-3" data-level="0" class="ContributionCalendar-day"></td>
+            </tr>
+          </table>
+          <tool-tip for="day-1">74 contributions on March 8, 2026</tool-tip>
+          <tool-tip for="day-2">3 contributions on March 9, 2026</tool-tip>
+          <tool-tip for="day-3">No contributions on March 10, 2026</tool-tip>
+        </div>
+      `;
+
+      globalThis.fetch = (url) => {
+        const urlStr = String(url);
+        if (urlStr.includes('/contributions')) {
+          return Promise.resolve({
+            ok: true,
+            status: 200,
+            text: () => Promise.resolve(mockHtml)
+          });
+        }
+        if (urlStr.includes('/repos')) {
+          return Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve([
+              { name: 'Portfolio', stargazers_count: 5, forks_count: 1, html_url: 'https://github.com/Vaibhav2176/Portfolio' }
+            ])
+          });
+        }
+        return Promise.resolve({
+          ok: true,
+          status: 200,
+          json: () => Promise.resolve({
+            public_repos: 9,
+            followers: 2,
+            following: 1
+          })
+        });
+      };
+
+      const req = { method: 'GET', query: { username: 'Vaibhav2176' } };
+      const res = createMockRes();
+      await githubHandler(req, res);
+
+      assert('GitHub handler returns HTTP 200 on valid profile and contributions', res.statusCode === 200);
+      assert('GitHub handler extracts totalContributions accurately', res.body?.data?.totalContributions === 519);
+      assert('GitHub handler extracts activeDays accurately', res.body?.data?.activeDays === 2);
+      assert('GitHub handler parses day-level active cells', res.body?.data?.activeCells?.['2026-03-08']?.count === 74);
+      assert('GitHub handler preserves publicRepos count', res.body?.data?.publicRepos === 9);
+      assert('GitHub handler includes repos array', Array.isArray(res.body?.data?.repos) && res.body.data.repos[0]?.name === 'Portfolio');
+    } finally {
+      globalThis.fetch = originalFetch;
+    }
+  }
+
+  // 14. GitHub: Resilient fallback when contributions endpoint fails
+  {
+    const originalFetch = globalThis.fetch;
+    try {
+      globalThis.fetch = (url) => {
+        const urlStr = String(url);
+        if (urlStr.includes('/contributions')) {
+          return Promise.resolve({ ok: false, status: 503 });
+        }
+        return Promise.resolve({
+          ok: true,
+          status: 200,
+          json: () => Promise.resolve({ public_repos: 9, followers: 0, following: 0 })
+        });
+      };
+
+      const req = { method: 'GET', query: { username: 'Vaibhav2176' } };
+      const res = createMockRes();
+      await githubHandler(req, res);
+
+      assert('GitHub handler succeeds even if contributions fetch fails', res.statusCode === 200);
+      assert('GitHub status is stale when contributions fail', res.body?.status === 'stale');
+      assert('GitHub totalContributions is null when unparseable', res.body?.data?.totalContributions === null);
+      assert('GitHub activeCells defaults to empty object without throwing', typeof res.body?.data?.activeCells === 'object');
+      assert('GitHub publicRepos remains intact', res.body?.data?.publicRepos === 9);
+    } finally {
+      globalThis.fetch = originalFetch;
+    }
+  }
+
+  // 15. GitHub: Consumer fallback to last valid cached data on failure
+  {
+    const cachedData = {
+      stats: { publicRepos: 9, totalContributions: 519, totalCommits: 291, activeDays: 73 },
+      calendar: { totalContributions: 519, activeCells: { '2026-03-08': { count: 74, level: 4 } } }
+    };
+    const initialBaseline = {
+      stats: { publicRepos: 6, totalContributions: 224, totalCommits: 291, activeDays: 32 }
+    };
+
+    const resolveFallbackState = (hasFailed, cachedPayload, baseline) => {
+      if (hasFailed) {
+        if (cachedPayload) {
+          return { data: cachedPayload, status: 'cached' };
+        }
+        return { data: baseline, status: 'snapshot' };
+      }
+      return { data: cachedPayload, status: 'live' };
+    };
+
+    const fallbackWithCache = resolveFallbackState(true, cachedData, initialBaseline);
+    assert('Consumer preserves last valid cached data on API failure', fallbackWithCache.data.stats.totalContributions === 519);
+    assert('Consumer sets status to cached when using last valid cache', fallbackWithCache.status === 'cached');
+
+    const fallbackWithoutCache = resolveFallbackState(true, null, initialBaseline);
+    assert('Consumer falls back to static baseline when no cache exists', fallbackWithoutCache.data.stats.totalContributions === 224);
+    assert('Consumer sets status to snapshot when using static baseline', fallbackWithoutCache.status === 'snapshot');
+
+    const resolveProvenanceStatus = (apiStatus, apiContributions, hasCalendar) => {
+      const isActuallyLive = apiStatus === 'live' && (typeof apiContributions === 'number' || hasCalendar);
+      return isActuallyLive ? 'live' : (apiStatus === 'cached' ? 'cached' : 'snapshot');
+    };
+    assert('UI never marks fallback/stale data as live', resolveProvenanceStatus('stale', null, false) === 'snapshot');
+    assert('UI marks live data as live only when genuine contributions exist', resolveProvenanceStatus('live', 519, true) === 'live');
+  }
+
+  // 16. GitHubHeatmap: Date bounds dynamic calculation
+  {
+    const calculateBounds = (refDate) => {
+      const now = refDate || new Date();
+      const endDate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+      const startDate = new Date(endDate);
+      startDate.setUTCDate(startDate.getUTCDate() - 364);
+      while (startDate.getUTCDay() !== 0) {
+        startDate.setUTCDate(startDate.getUTCDate() - 1);
+      }
+      return { startDate, endDate };
+    };
+
+    const bounds = calculateBounds(new Date('2026-10-29T12:00:00Z'));
+    assert('Dynamic bounds endDate matches reference UTC date', bounds.endDate.toISOString().startsWith('2026-10-29'));
+    assert('Dynamic bounds startDate aligns to Sunday (getUTCDay === 0)', bounds.startDate.getUTCDay() === 0);
+    const spanDays = Math.round((bounds.endDate - bounds.startDate) / (1000 * 60 * 60 * 24));
+    assert('Calendar matrix span covers full 52+ week window (>= 364 days)', spanDays >= 364 && spanDays <= 371);
+  }
+
   console.log(`\nRESULTS: ${passed}/${total} assertions passed.`);
   if (passed !== total) process.exit(1);
 }

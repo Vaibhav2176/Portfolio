@@ -682,81 +682,160 @@
   }
 }
 
-/* Tablets & Small Laptops (769px–1024px) */
-@media (max-width: 1024px) {
+/* Tablets, Compact Laptops & Desktop-Site Viewports (881px–1024px) */
+@media (max-width: 1024px) and (min-width: 881px) {
   .hero-editorial-section {
+    display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: flex-start;
+    min-height: auto;
     height: auto;
-    min-height: 100vh;
-    min-height: 100dvh;
+    padding-top: 0;
+    padding-bottom: 2rem;
+    width: 100%;
   }
 
   .hero-editorial-viewport {
-    grid-template-columns: 1fr;
-    gap: 2.25rem;
-    padding-top: calc(72px + 1.25rem);
-    padding-bottom: 2.5rem;
+    width: 100%;
+    max-width: 1020px;
+    grid-template-columns: 1.08fr 0.92fr;
+    gap: 2.5vw;
+    padding: calc(72px + 1.25rem) 4vw 2rem 4vw;
+    align-items: center;
     text-align: left;
+    margin: 0 auto;
   }
 
-  /* Identity & Action Pathways FIRST on Mobile & Tablet */
   .hero-editorial-copy {
     order: 1;
     align-items: flex-start;
     text-align: left;
     width: 100%;
-    max-width: 720px;
-    margin: 0 auto;
+    z-index: 10;
   }
 
-  .hero-eyebrow-group {
-    justify-content: flex-start;
+  .hero-editorial-name {
+    font-size: clamp(2.8rem, 4.8vw, 3.8rem);
+    line-height: 0.94;
   }
 
   .hero-editorial-intro {
-    margin-left: 0;
-    margin-right: 0;
-    max-width: 620px;
+    font-size: clamp(1rem, 1.2vw, 1.15rem);
+    line-height: 1.52;
+    max-width: 490px;
+    margin-bottom: 1.35rem;
   }
 
   .hero-editorial-actions {
-    justify-content: flex-start;
+    gap: 0.85rem;
+    margin-bottom: 1rem;
   }
 
-  .hero-editorial-location {
-    justify-content: flex-start;
+  .hero-btn-primary,
+  .hero-btn-secondary {
+    padding: 0.75rem 1.45rem;
+    font-size: 0.85rem;
   }
 
-  /* Visual SECOND: Grounds the composition naturally below the identity */
+  .hero-editorial-visual {
+    order: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: relative;
+    z-index: 10;
+  }
+
+  .hero-portrait-stage {
+    width: 100%;
+    max-width: 440px;
+    height: clamp(340px, 38vw, 420px);
+    margin: 0 auto;
+  }
+
+  .hero-card-academic {
+    bottom: 12px;
+    right: 8px;
+    width: 195px;
+    padding: 0.5rem 0.65rem;
+  }
+
+  .hero-card-stack {
+    bottom: 12px;
+    left: 8px;
+    width: 180px;
+    padding: 0.5rem 0.65rem;
+  }
+
+  .hero-editorial-scroll-cue {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    transform: none;
+    margin: 1.5rem auto 0 auto;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding-bottom: 0.5rem;
+  }
+}
+
+/* Intermediate Viewports (769px–880px) */
+@media (max-width: 880px) and (min-width: 769px) {
+  .hero-editorial-section {
+    flex-direction: column;
+    justify-content: flex-start;
+    height: auto;
+    min-height: auto;
+    padding-bottom: 2rem;
+  }
+
+  .hero-editorial-viewport {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+    padding: calc(72px + 1rem) 1.75rem 1.5rem 1.75rem;
+    text-align: left;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .hero-editorial-copy {
+    order: 1;
+    align-items: flex-start;
+    text-align: left;
+    width: 100%;
+  }
+
+  .hero-editorial-name {
+    font-size: clamp(2.6rem, 5.5vw, 3.4rem);
+    line-height: 0.94;
+  }
+
+  .hero-editorial-intro {
+    font-size: 1.05rem;
+    line-height: 1.5;
+    max-width: 580px;
+    margin-bottom: 1.25rem;
+  }
+
   .hero-editorial-visual {
     order: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    gap: 1.5rem;
-    margin-top: 0.25rem;
+    gap: 1.25rem;
     position: relative;
   }
 
   .hero-portrait-stage {
-    max-width: 480px;
-    height: clamp(320px, 44vw, 400px);
+    max-width: 420px;
+    height: clamp(300px, 42vw, 370px);
     margin: 0 auto;
-    border-radius: 0;
-    overflow: visible;
-    background: none;
     -webkit-mask-image: radial-gradient(ellipse 88% 84% at 50% 36%, #000000 50%, rgba(0, 0, 0, 0.7) 70%, transparent 100%);
     mask-image: radial-gradient(ellipse 88% 84% at 50% 36%, #000000 50%, rgba(0, 0, 0, 0.7) 70%, transparent 100%);
-  }
-
-  .hero-portrait-fade-left {
-    width: 25%;
-  }
-
-  .hero-portrait-fade-bottom {
-    height: 30%;
   }
 
   .hero-cards-container {
@@ -765,24 +844,20 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    gap: 1.25rem;
+    gap: 1rem;
     width: 100%;
-    max-width: 520px;
+    max-width: 460px;
     margin: 0 auto;
-    pointer-events: auto;
   }
 
   .hero-card-academic,
   .hero-card-stack {
     position: relative;
     inset: auto;
-    bottom: auto;
-    left: auto;
-    right: auto;
     flex: 1 1 0;
-    max-width: 250px;
+    max-width: 220px;
     width: 100%;
-    padding: 0.65rem 0.85rem;
+    padding: 0.55rem 0.75rem;
   }
 
   .hero-editorial-scroll-cue {
@@ -790,7 +865,7 @@
     bottom: auto;
     left: auto;
     transform: none;
-    margin: 2.25rem auto 0 auto;
+    margin: 1.5rem auto 0 auto;
     display: flex;
     justify-content: center;
     width: 100%;
@@ -801,9 +876,14 @@
 /* Mobile Devices (≤768px) */
 @media (max-width: 768px) {
   .hero-editorial-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
     min-height: auto;
     height: auto;
     padding-bottom: 2rem;
+    width: 100%;
   }
 
   .hero-editorial-viewport {

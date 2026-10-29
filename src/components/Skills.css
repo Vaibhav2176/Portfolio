@@ -332,8 +332,14 @@
   color: #cbd5e1;
   letter-spacing: 0.02em;
   white-space: normal;
-  word-break: normal;
+  word-break: break-word;
+  max-width: 100%;
   transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.pill-text {
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .skill-item-pill:hover {
@@ -702,20 +708,32 @@
 @media (max-width: 1100px) {
   .skills-cards-grid {
     grid-template-columns: repeat(2, 1fr);
-    align-items: start;
+    align-items: stretch;
     gap: var(--space-5);
   }
 
   .skills-cards-grid > *,
-  .skill-category-card,
-  .skills-tools-column-group {
+  .skill-category-card {
     grid-column: span 1 !important;
-    align-self: start;
+    align-self: stretch;
     width: 100%;
     min-width: 0;
     max-width: 100%;
     height: auto;
     transform: none !important;
+  }
+
+  /* Flatten tools column group so Card 06 and terminal flow naturally */
+  .skills-tools-column-group {
+    display: contents !important;
+  }
+
+  .skills-terminal-artifact {
+    order: 10 !important;
+    grid-column: 1 / -1 !important;
+    width: 100%;
+    max-width: 580px;
+    margin: var(--space-4) auto 0 auto;
   }
 }
 

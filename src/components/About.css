@@ -362,6 +362,9 @@
   position: relative;
   z-index: 2;
   box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.4);
+  overflow-x: auto;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .code-line {
@@ -767,20 +770,57 @@
    RESPONSIVENESS & ACCESSIBILITY (REDUCED MOTION)
    ========================================================================== */
 
-@media (max-width: 1024px) {
+/* Tablets, Compact Laptops & Desktop-Site Viewports (881px–1024px) */
+@media (max-width: 1024px) and (min-width: 881px) {
+  .about-header-split {
+    grid-template-columns: 1.12fr 0.88fr;
+    gap: var(--space-8);
+    align-items: center;
+  }
+
+  .about-profile-panel {
+    max-width: 100%;
+    width: 100%;
+    transform: none !important;
+  }
+
+  .about-pillars-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-6);
+  }
+
+  .about-pillar-feature-card:nth-child(3) {
+    grid-column: span 2;
+    max-width: 100%;
+  }
+
+  .about-pillar-feature-card {
+    transform: none !important;
+  }
+}
+
+/* Intermediate Tablets (641px–880px) */
+@media (max-width: 880px) and (min-width: 641px) {
   .about-header-split {
     grid-template-columns: 1fr;
     gap: var(--space-8);
   }
 
   .about-profile-panel {
-    max-width: 540px;
+    max-width: 620px;
+    width: 100%;
+    margin: 0 auto;
     transform: none !important;
   }
 
   .about-pillars-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: var(--space-6);
+  }
+
+  .about-pillar-feature-card:nth-child(3) {
+    grid-column: span 2;
+    max-width: 100%;
   }
 
   .about-pillar-feature-card {
@@ -789,6 +829,25 @@
 }
 
 @media (max-width: 640px) {
+  .about-header-split {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  .about-profile-panel {
+    max-width: 100%;
+    width: 100%;
+    transform: none !important;
+  }
+
+  .about-pillars-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+
+  .about-pillar-feature-card {
+    transform: none !important;
+  }
   .about-editorial-section {
     padding-top: var(--space-16);
     padding-bottom: var(--space-16);

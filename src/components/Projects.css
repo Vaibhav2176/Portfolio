@@ -978,12 +978,13 @@
 /* --- Nostera Multi-Screen Layered Composition --- */
 .nostera-multi-screen-frame {
   border-color: rgba(244, 63, 94, 0.28);
-  padding: 1.75rem 1rem 1.5rem;
+  padding: clamp(1rem, 2vw, 1.5rem) clamp(0.75rem, 1.5vw, 1.25rem);
   background: linear-gradient(180deg, rgba(10, 16, 32, 0.92) 0%, rgba(6, 10, 22, 0.96) 100%);
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 400px;
+  min-height: auto;
+  height: auto;
 }
 
 .nostera-layered-device-composition {
@@ -992,8 +993,8 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 490px;
-  height: 330px;
+  max-width: 480px;
+  height: clamp(300px, 34vw, 340px);
 }
 
 /* Secondary Background Screens (Angled with Clarity and Depth) */
@@ -1159,7 +1160,7 @@
 
 .workspace-interior-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
   gap: 0.65rem;
 }
 
@@ -1672,42 +1673,82 @@
   }
 
   .project-card {
-    padding: 1.85rem 2rem;
+    padding: 1.65rem 1.75rem;
   }
 
-  .project-inner-grid,
-  .project-card.layout-reverse .project-inner-grid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+  /* Tablets, Compact Laptops & Desktop-Site Viewports (881px–1024px) */
+  @media (min-width: 881px) {
+    .project-inner-grid {
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 1.75rem;
+      align-items: center;
+    }
+
+    .project-card.layout-reverse .project-inner-grid {
+      grid-template-columns: 0.92fr 1.08fr;
+    }
+
+    .nostera-layered-device-composition {
+      max-width: 440px;
+      height: 310px;
+    }
+
+    .secondary-screen-card {
+      width: 135px;
+      height: 275px;
+      opacity: 0.88;
+    }
+
+    .phone-device-bezel.primary-phone-center {
+      width: 180px;
+    }
+
+    .phone-screen-container {
+      height: 275px;
+    }
   }
 
-  .project-card.layout-reverse .project-content-col {
-    order: 1;
-  }
+  /* Narrower Viewports (<=880px) */
+  @media (max-width: 880px) {
+    .project-inner-grid,
+    .project-card.layout-reverse .project-inner-grid {
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+    }
 
-  .project-card.layout-reverse .project-visual-col {
-    order: 2;
-  }
+    .project-card.layout-reverse .project-content-col {
+      order: 1;
+    }
 
+    .project-card.layout-reverse .project-visual-col {
+      order: 2;
+    }
 
+    .nostera-multi-screen-frame {
+      min-height: auto;
+      height: auto;
+      padding: 1.25rem 0.75rem 1rem;
+    }
 
-  .nostera-layered-device-composition {
-    max-width: 440px;
-    height: 310px;
-  }
+    .nostera-layered-device-composition {
+      max-width: 380px;
+      height: 310px;
+      margin: 0 auto;
+    }
 
-  .secondary-screen-card {
-    width: 135px;
-    height: 275px;
-    opacity: 0.85;
-  }
+    .secondary-screen-card {
+      width: 125px;
+      height: 260px;
+      opacity: 0.85;
+    }
 
-  .phone-device-bezel.primary-phone-center {
-    width: 180px;
-  }
+    .phone-device-bezel.primary-phone-center {
+      width: 172px;
+    }
 
-  .phone-screen-container {
-    height: 275px;
+    .phone-screen-container {
+      height: 260px;
+    }
   }
 }
 

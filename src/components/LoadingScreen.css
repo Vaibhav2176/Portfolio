@@ -1,0 +1,430 @@
+/* ==========================================================================
+   LOADING SCREEN STYLING — CINEMATIC FULL-SCREEN 3D INTRODUCTION
+   Matches portfolio midnight-blue (#040711 / #060a14) and electric cyan aesthetic
+   Occupies 100vw × 100dvh with edge-to-edge 3D space and enlarged focal centerpiece
+   ========================================================================== */
+
+.loading-screen-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #040711;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  isolation: isolate;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.65s cubic-bezier(0.4, 0, 0.2, 1),
+              visibility 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity;
+}
+
+.loading-screen-overlay.is-exiting:not(.is-handoff) {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loading-screen-overlay.is-handoff {
+  background-color: transparent;
+  transition: background-color 1.25s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.loading-screen-overlay.is-handoff .loading-ambient-bloom-center,
+.loading-screen-overlay.is-handoff .loading-ambient-bloom-cyan,
+.loading-screen-overlay.is-handoff .loading-ambient-bloom-blue,
+.loading-screen-overlay.is-handoff .loading-canvas-container {
+  opacity: 0;
+  transition: opacity 1.15s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+}
+
+/* Atmospheric Radial Ambient Washes — Spanning the full screen */
+.loading-ambient-bloom-center {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(1100px, 95vw);
+  height: min(1100px, 95vh);
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.08) 0%, rgba(37, 99, 235, 0.035) 45%, transparent 72%);
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 50%;
+  filter: blur(65px);
+  animation: ambientBloomDrift 9s infinite alternate ease-in-out;
+}
+
+@keyframes ambientBloomDrift {
+  0% {
+    transform: translate(-50%, -50%) scale(0.96);
+    opacity: 0.85;
+  }
+  100% {
+    transform: translate(-49%, -51%) scale(1.04);
+    opacity: 1;
+  }
+}
+
+.loading-ambient-bloom-cyan {
+  position: absolute;
+  top: 15%;
+  left: 15%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.06) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 50%;
+  filter: blur(50px);
+}
+
+.loading-ambient-bloom-blue {
+  position: absolute;
+  bottom: 15%;
+  right: 15%;
+  width: 550px;
+  height: 550px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.06) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 50%;
+  filter: blur(55px);
+}
+
+/* Full-viewport 3D Canvas Background Container (edge to edge) */
+.loading-canvas-container {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+  transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.65s ease;
+}
+
+.loading-3d-canvas-wrapper {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+}
+
+.loading-screen-overlay.is-exiting:not(.is-handoff) .loading-canvas-container {
+  transform: scale(0.97);
+  opacity: 0;
+}
+
+.loading-screen-overlay.is-handoff .loading-canvas-container {
+  transform: scale(0.97);
+  opacity: 0;
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.85s ease;
+}
+
+.loading-screen-overlay.is-handoff .loading-ambient-bloom-center,
+.loading-screen-overlay.is-handoff .loading-ambient-bloom-cyan,
+.loading-screen-overlay.is-handoff .loading-ambient-bloom-blue {
+  opacity: 0;
+  transition: opacity 0.75s ease;
+}
+
+/* Recomposed Flow Shell: Centered both vertically & horizontally */
+.loading-flow-container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 1.5rem 1rem;
+  pointer-events: none;
+}
+
+/* Upper Spatial Zone reserved for the balanced 3D Geometric Centerpiece */
+.loading-centerpiece-anchor {
+  width: 100%;
+  height: 250px;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+/* Typography & Telemetry Group — Primary Visual Focal Point */
+.loading-content-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 3;
+  margin-top: 0;
+  max-width: 90vw;
+  transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.65s ease;
+  will-change: transform, opacity;
+  pointer-events: auto;
+}
+
+.loading-screen-overlay.is-exiting:not(.is-handoff) .loading-content-group {
+  transform: translateY(-8px) scale(0.98);
+  opacity: 0;
+}
+
+.loading-screen-overlay.is-handoff .loading-eyebrow-row,
+.loading-screen-overlay.is-handoff .loading-role-text,
+.loading-screen-overlay.is-handoff .loading-telemetry-container {
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+
+/* Eyebrow Status Badge */
+.loading-eyebrow-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.22rem 0.85rem;
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.22);
+  border-radius: var(--radius-full, 9999px);
+  margin-bottom: 0.85rem;
+  opacity: 0;
+  animation: loadingFadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+}
+
+.loading-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #38bdf8;
+  box-shadow: 0 0 8px #38bdf8;
+  animation: loadingDotPulse 1.8s infinite ease-in-out;
+}
+
+@keyframes loadingDotPulse {
+  0%, 100% {
+    transform: scale(0.9);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+.loading-eyebrow-text {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: #38bdf8;
+  text-transform: uppercase;
+}
+
+/* Crisp Monolithic Name Identity (Primary Focal Point) */
+.loading-brand-name {
+  font-size: clamp(3.0rem, 5.8vw, 4.2rem);
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+  margin: 0 0 0.55rem 0;
+  text-shadow: 0 4px 28px rgba(0, 0, 0, 0.85), 0 0 40px rgba(56, 189, 248, 0.26);
+  opacity: 0;
+  animation: loadingFadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+}
+
+.loading-brand-text {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  line-height: inherit;
+}
+
+.loading-brand-text.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loading-brand-dot {
+  display: inline-block;
+  color: #ffffff;
+  transition: opacity 0.20s ease, transform 0.20s ease;
+}
+
+.loading-brand-dot.is-fading {
+  opacity: 0;
+  transform: scale(0.3) translateX(-3px);
+}
+
+/* Floating Shared-Name Transition Flyer */
+.loading-flying-name {
+  position: fixed;
+  font-family: var(--font-heading, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-weight: 800;
+  color: #ffffff;
+  text-transform: uppercase;
+  z-index: 100000;
+  pointer-events: none;
+  transform-origin: center center;
+  will-change: transform;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+
+/* Secondary Role Text */
+.loading-role-text {
+  font-size: clamp(0.76rem, 1.4vw, 0.88rem);
+  color: #94a3b8;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin: 0 0 1.8rem 0;
+  font-weight: 500;
+  opacity: 0;
+  animation: loadingFadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
+}
+
+/* Minimal Precision Progress Bar & Telemetry */
+.loading-telemetry-container {
+  width: 330px;
+  max-width: 84vw;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  opacity: 0;
+  animation: loadingFadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.55s forwards;
+}
+
+@keyframes loadingFadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.loading-progress-track {
+  width: 100%;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+.loading-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #2563eb 0%, #38bdf8 100%);
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.85);
+  border-radius: 3px;
+  transition: width 0.08s linear;
+}
+
+.loading-telemetry-labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.68rem;
+  color: #64748b;
+  letter-spacing: 0.08em;
+}
+
+.telemetry-label-percent {
+  color: #38bdf8;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (1024px -> 320px)
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .loading-centerpiece-anchor {
+    height: 230px;
+  }
+  .loading-telemetry-container {
+    width: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .loading-centerpiece-anchor {
+    height: 210px;
+  }
+  .loading-content-group {
+    margin-top: 0;
+  }
+  .loading-brand-name {
+    font-size: clamp(2.6rem, 6.2vw, 3.2rem);
+  }
+  .loading-telemetry-container {
+    width: 275px;
+  }
+}
+
+@media (max-width: 480px) {
+  .loading-centerpiece-anchor {
+    height: 180px;
+  }
+  .loading-brand-name {
+    font-size: 2.35rem;
+  }
+  .loading-role-text {
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 1.4rem;
+  }
+  .loading-telemetry-container {
+    width: 235px;
+  }
+}
+
+@media (max-width: 340px) {
+  .loading-centerpiece-anchor {
+    height: 155px;
+  }
+  .loading-brand-name {
+    font-size: 2.05rem;
+  }
+  .loading-telemetry-container {
+    width: 200px;
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .loading-screen-overlay,
+  .loading-canvas-container,
+  .loading-content-group,
+  .loading-progress-bar {
+    transition: opacity 0.4s ease !important;
+    transform: none !important;
+  }
+  .loading-eyebrow-row,
+  .loading-brand-name,
+  .loading-role-text,
+  .loading-telemetry-container {
+    opacity: 1 !important;
+    animation: none !important;
+    transform: none !important;
+  }
+  .loading-status-dot,
+  .loading-ambient-bloom-center {
+    animation: none !important;
+  }
+}

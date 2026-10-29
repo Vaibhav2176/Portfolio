@@ -1,0 +1,1534 @@
+/* ==========================================================================
+   DEVELOPER ACTIVITY & PROBLEM SOLVING STYLES
+   - Continuous 3D spatial background (#060a14) extending through full height
+   - Part A: GitHub Engineering Activity with restrained emerald identity
+   - Part B: LeetCode Practice with warm amber/yellow identity
+   - Balanced split layout: Heatmap on Left + Stats Rail on Right (Zero wasted space)
+   - Exactly three public repositories displayed in a 3-column grid
+   - High-performance: No backdrop-filters or blur filters, native 60fps scrolling
+   ========================================================================== */
+
+/* --- Section Container & Continuous 3D Canvas Flow --- */
+.activity-editorial-section {
+  position: relative;
+  overflow: hidden;
+  padding-top: clamp(4.5rem, 7vw, 7rem);
+  padding-bottom: clamp(4.5rem, 7vw, 7rem);
+  background-color: #060a14;
+  z-index: 2;
+  border: none;
+}
+
+/* Atmospheric 3D Canvas Container */
+.activity-3d-canvas-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.95;
+}
+
+/* Seamless Depth Plane Gradient (Ensures perfect transition from Academic #060a14) */
+.activity-depth-plane-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    #060a14 0%,
+    rgba(6, 10, 20, 0.1) 18%,
+    rgba(6, 10, 20, 0.25) 75%,
+    #060a14 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Fine Architectural Grid Lines */
+.activity-grid-pattern-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 64px 64px;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.16;
+}
+
+/* Ambient Blooms: Soft multi-stop radial gradient positioned cleanly within section bounds */
+.activity-ambient-bloom-left {
+  position: absolute;
+  top: 20%;
+  left: 0;
+  width: min(480px, 100%);
+  max-width: 100%;
+  height: 480px;
+  background: radial-gradient(circle at 0% 50%, rgba(16, 185, 129, 0.07) 0%, rgba(16, 185, 129, 0.02) 40%, transparent 70%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.activity-ambient-bloom-right {
+  position: absolute;
+  bottom: 20%;
+  right: 0;
+  width: min(480px, 100%);
+  max-width: 100%;
+  height: 480px;
+  background: radial-gradient(circle at 100% 50%, rgba(245, 158, 11, 0.06) 0%, rgba(245, 158, 11, 0.018) 40%, transparent 70%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.activity-content-container {
+  position: relative;
+  z-index: 10;
+  max-width: 1440px;
+}
+
+/* ==========================================================================
+   SECTION HEADER & TYPOGRAPHY
+   Subordinate, understated, natural tone ("Code & Problem Solving")
+   ========================================================================== */
+
+.activity-section-header {
+  margin-bottom: var(--space-8);
+}
+
+.activity-title {
+  font-size: clamp(1.85rem, 3.2vw, 2.45rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: var(--space-2) 0 var(--space-3);
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+.activity-description {
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  max-width: 620px;
+  line-height: 1.6;
+  margin: 0 0 var(--space-5);
+}
+
+/* Quick Navigation Jump Pills */
+.activity-nav-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.activity-nav-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 1.05rem;
+  background: rgba(14, 24, 48, 0.6);
+  border: 1px solid rgba(56, 189, 248, 0.16);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.activity-nav-pill.pill-github:hover {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.45);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+}
+
+.activity-nav-pill.pill-leetcode:hover {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.45);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+}
+
+.nav-pill-icon {
+  font-size: 0.95rem;
+}
+
+/* ==========================================================================
+   PLATFORM AREAS (GitHub and LeetCode as Dedicated Full-Width Cards)
+   ========================================================================== */
+
+.activity-platform-block {
+  margin-top: var(--space-8);
+  scroll-margin-top: 90px;
+}
+
+.platform-card {
+  padding: clamp(1.85rem, 3.8vw, 3rem);
+  background: linear-gradient(180deg, rgba(12, 21, 42, 0.95) 0%, rgba(8, 14, 28, 0.98) 100%);
+  border: 1px solid rgba(56, 189, 248, 0.14);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
+  position: relative;
+  overflow: hidden;
+}
+
+/* GitHub Card Top Hairline Highlight */
+.github-card {
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+.github-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(16, 185, 129, 0.45) 50%, transparent 100%);
+}
+
+/* LeetCode Card Top Hairline Highlight */
+.leetcode-card {
+  border-color: rgba(245, 158, 11, 0.2);
+}
+
+.leetcode-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(245, 158, 11, 0.45) 50%, transparent 100%);
+}
+
+/* ==========================================================================
+   PLATFORM HEADER BAR
+   ========================================================================== */
+
+.platform-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid rgba(56, 189, 248, 0.1);
+}
+
+.github-header {
+  border-bottom-color: rgba(16, 185, 129, 0.14);
+}
+
+.leetcode-header {
+  border-bottom-color: rgba(245, 158, 11, 0.14);
+}
+
+.platform-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.platform-badge-tag {
+  display: inline-flex;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.gh-tag {
+  color: #34d399;
+}
+
+.lc-tag {
+  color: #fbbf24;
+}
+
+.platform-title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+  max-width: 100%;
+}
+
+.platform-title-row > div {
+  min-width: 0;
+}
+
+.platform-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  font-size: 1.35rem;
+  flex-shrink: 0;
+}
+
+.github-icon-wrap {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #34d399;
+}
+
+.leetcode-icon-wrap {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #f59e0b;
+}
+
+.platform-heading {
+  font-size: clamp(1.05rem, 3.5vw, 1.25rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+.platform-sub-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: 0.15rem;
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.platform-handle {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.platform-dot-sep {
+  color: var(--text-muted);
+}
+
+/* Status Pills */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-full);
+  font-size: 0.68rem;
+  font-weight: 500;
+}
+
+.status-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+.status-live {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #34d399;
+}
+
+.status-cached {
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: var(--accent-blue-light);
+}
+
+.status-snapshot {
+  background: rgba(148, 163, 184, 0.1);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  color: #cbd5e1;
+}
+
+.profile-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 1.05rem;
+  font-size: var(--text-xs);
+}
+
+.gh-cta-btn:hover {
+  border-color: rgba(16, 185, 129, 0.5);
+  color: #34d399;
+}
+
+.lc-cta-btn:hover {
+  border-color: rgba(245, 158, 11, 0.5);
+  color: #fbbf24;
+}
+
+/* ==========================================================================
+   PLATFORM METRICS OVERVIEW (Full-Width 4-Column Grid)
+   Spacious, comfortable padding, uncompressed numbers, zero crowding
+   ========================================================================== */
+
+.platform-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+
+.overview-metric-card {
+  padding: 1.25rem 1.45rem;
+  background: rgba(7, 13, 27, 0.65);
+  border: 1px solid rgba(56, 189, 248, 0.12);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.22);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  transition: border-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.gh-metric-card {
+  border-color: rgba(16, 185, 129, 0.16);
+}
+
+.gh-metric-card:hover {
+  border-color: rgba(16, 185, 129, 0.35);
+  transform: translateY(-2px);
+}
+
+.lc-metric-card {
+  border-color: rgba(245, 158, 11, 0.16);
+}
+
+.lc-metric-card:hover {
+  border-color: rgba(245, 158, 11, 0.35);
+  transform: translateY(-2px);
+}
+
+.overview-metric-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.overview-icon {
+  font-size: 0.9rem;
+}
+
+.overview-metric-value {
+  font-size: clamp(1.4rem, 2.3vw, 1.75rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.metric-inline-rate {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-left: 0.35rem;
+}
+
+.overview-metric-sub {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin-top: 0.1rem;
+}
+
+/* Dedicated Full-Width Heatmap Panel */
+.platform-heatmap-panel {
+  margin-top: var(--space-6);
+}
+
+/* ==========================================================================
+   LEETCODE DIFFICULTY BREAKDOWN SECTION (Full 3-Column Spacious Grid)
+   ========================================================================== */
+
+.lc-difficulty-section {
+  margin-top: var(--space-7);
+  padding-top: var(--space-6);
+  border-top: 1px solid rgba(245, 158, 11, 0.14);
+}
+
+.lc-difficulty-grid.diff-three-col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.diff-card-rich {
+  position: relative;
+  overflow: hidden;
+  padding: 1.15rem 1.35rem;
+  background: rgba(8, 14, 28, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.22);
+  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.diff-card-rich:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.32);
+}
+
+/* Distinct Tier Accents & Left Borders */
+.diff-easy-rich {
+  border-left: 3.5px solid #10b981;
+  border-color: rgba(16, 185, 129, 0.2);
+  border-left-color: #10b981;
+}
+.diff-easy-rich:hover {
+  border-color: rgba(16, 185, 129, 0.4);
+  border-left-color: #34d399;
+}
+
+.diff-medium-rich {
+  border-left: 3.5px solid #f59e0b;
+  border-color: rgba(245, 158, 11, 0.2);
+  border-left-color: #f59e0b;
+}
+.diff-medium-rich:hover {
+  border-color: rgba(245, 158, 11, 0.4);
+  border-left-color: #fbbf24;
+}
+
+.diff-hard-rich {
+  border-left: 3.5px solid #ef4444;
+  border-color: rgba(239, 68, 68, 0.2);
+  border-left-color: #ef4444;
+}
+.diff-hard-rich:hover {
+  border-color: rgba(239, 68, 68, 0.4);
+  border-left-color: #f87171;
+}
+
+/* Top Subtle Highlight Beam */
+.diff-card-top-beam {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+}
+.beam-easy {
+  background: linear-gradient(90deg, #10b981 0%, rgba(16, 185, 129, 0.35) 60%, transparent 100%);
+}
+.beam-medium {
+  background: linear-gradient(90deg, #f59e0b 0%, rgba(245, 158, 11, 0.35) 60%, transparent 100%);
+}
+.beam-hard {
+  background: linear-gradient(90deg, #ef4444 0%, rgba(239, 68, 68, 0.35) 60%, transparent 100%);
+}
+
+/* Card Header: Tier Badge on Left, Solved Count on Right */
+.diff-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.diff-tier-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.pill-tier-icon {
+  font-size: 0.82rem;
+}
+.pill-easy {
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.28);
+}
+.pill-medium {
+  background: rgba(245, 158, 11, 0.12);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.28);
+}
+.pill-hard {
+  background: rgba(239, 68, 68, 0.12);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.28);
+}
+
+.diff-hero-count {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+.hero-number {
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.hero-unit {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Luminous Progress Bar Track & Fill */
+.diff-progress-block {
+  width: 100%;
+}
+
+.diff-progress-track {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.diff-progress-bar {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bar-easy {
+  background: linear-gradient(90deg, #059669 0%, #10b981 100%);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+}
+.bar-medium {
+  background: linear-gradient(90deg, #d97706 0%, #f59e0b 100%);
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+}
+.bar-hard {
+  background: linear-gradient(90deg, #dc2626 0%, #ef4444 100%);
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
+}
+
+/* Balanced Single-Row Micro-Stats */
+.diff-stats-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  padding-top: 0.35rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.diff-stat-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.stat-lbl {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+}
+
+.stat-val {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.diff-share-item .stat-val {
+  color: var(--text-muted);
+  font-size: 0.68rem;
+}
+
+/* ==========================================================================
+   AUTHENTIC GITHUB CONTRIBUTION HEATMAP
+   ========================================================================== */
+
+.gh-heatmap-wrapper {
+  padding: var(--space-5);
+  background: rgba(7, 13, 27, 0.65);
+  border: 1px solid rgba(16, 185, 129, 0.18);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.gh-heatmap-meta-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid rgba(16, 185, 129, 0.12);
+  margin-bottom: var(--space-3);
+}
+
+.gh-heatmap-heading-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.gh-heatmap-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.gh-heatmap-subtitle {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+}
+
+.gh-heatmap-stats-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.gh-strip-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.55rem;
+  background: rgba(14, 24, 48, 0.7);
+  border: 1px solid rgba(16, 185, 129, 0.22);
+  border-radius: var(--radius-sm);
+  font-size: 0.68rem;
+}
+
+.strip-icon {
+  font-size: 0.85rem;
+}
+
+.strip-val {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.strip-lbl {
+  color: var(--text-secondary);
+}
+
+/* Scroll Container for Contribution Calendar */
+.gh-heatmap-scroll-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: var(--space-2) 0 0.65rem 0;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(16, 185, 129, 0.45) rgba(255, 255, 255, 0.05);
+}
+
+.gh-heatmap-scroll-container::-webkit-scrollbar {
+  height: 5px;
+}
+
+.gh-heatmap-scroll-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 999px;
+}
+
+.gh-heatmap-scroll-container::-webkit-scrollbar-thumb {
+  background: rgba(16, 185, 129, 0.4);
+  border-radius: 999px;
+}
+
+.gh-heatmap-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(16, 185, 129, 0.7);
+}
+
+.gh-heatmap-scroll-container:focus-visible {
+  box-shadow: 0 0 0 2px #10b981;
+  border-radius: var(--radius-sm);
+}
+
+.gh-heatmap-matrix {
+  min-width: 820px;
+  width: max-content;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Month Labels Row — gap matches heatmap body */
+.gh-month-labels-row {
+  display: flex;
+  gap: 6px;
+  height: 18px;
+  position: relative;
+}
+
+.gh-day-label-gutter {
+  width: 32px;
+  flex-shrink: 0;
+}
+
+.gh-month-labels-track {
+  position: relative;
+  flex: 1;
+  height: 100%;
+}
+
+.gh-month-label {
+  position: absolute;
+  top: 0;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* Heatmap Body: Day Labels + Week Columns */
+.gh-heatmap-body {
+  display: flex;
+  gap: 6px;
+}
+
+.gh-day-labels-col {
+  width: 32px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.gh-day-lbl {
+  height: 12px;
+  line-height: 12px;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  user-select: none;
+}
+
+.gh-day-lbl.day-empty {
+  visibility: hidden;
+}
+
+.gh-weeks-track {
+  display: flex;
+  gap: 3px;
+  flex: 1;
+}
+
+.gh-week-column {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+/* Daily Contribution Cells */
+.gh-day-cell {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+  cursor: pointer;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.gh-day-cell:hover,
+.gh-day-cell:focus {
+  transform: scale(1.35);
+  z-index: 5;
+  border-color: #ffffff !important;
+  box-shadow: 0 0 8px rgba(74, 222, 128, 0.8) !important;
+}
+
+/* GitHub Green Intensity Color Scale */
+.gh-level-0 {
+  background-color: #0c1424;
+  border: 1px solid rgba(16, 185, 129, 0.08);
+}
+
+.gh-level-1 {
+  background-color: rgba(16, 185, 129, 0.35);
+  border: 1px solid rgba(16, 185, 129, 0.45);
+}
+
+.gh-level-2 {
+  background-color: rgba(16, 185, 129, 0.60);
+  border: 1px solid rgba(16, 185, 129, 0.75);
+}
+
+.gh-level-3 {
+  background-color: rgba(34, 197, 94, 0.85);
+  border: 1px solid #22c55e;
+  box-shadow: 0 0 4px rgba(34, 197, 94, 0.4);
+}
+
+.gh-level-4 {
+  background-color: #4ade80;
+  border: 1px solid #ffffff;
+  box-shadow: 0 0 8px rgba(74, 222, 128, 0.65);
+}
+
+.cell-future {
+  background-color: transparent;
+  border: 1px dashed rgba(255, 255, 255, 0.04);
+  cursor: default;
+  pointer-events: none;
+}
+
+/* Heatmap Footer: Live Tooltip Display & Legend */
+.gh-heatmap-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  padding-top: var(--space-2);
+  border-top: 1px solid rgba(16, 185, 129, 0.12);
+}
+
+.gh-heatmap-tooltip-display {
+  min-height: 18px;
+  display: flex;
+  align-items: center;
+}
+
+.gh-tooltip-active {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #34d399;
+  font-weight: 600;
+  background: rgba(16, 185, 129, 0.12);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(16, 185, 129, 0.28);
+  font-size: 0.7rem;
+}
+
+.gh-tooltip-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: #34d399;
+}
+
+.gh-tooltip-idle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.7rem;
+}
+
+.gh-heatmap-legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.68rem;
+}
+
+.gh-legend-cell {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.gh-heatmap-fallback {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  background: rgba(14, 24, 48, 0.7);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: var(--radius-lg);
+}
+
+/* ==========================================================================
+   FEATURED PUBLIC REPOSITORIES (Exactly Three Repositories)
+   ========================================================================== */
+
+.gh-repos-subpanel {
+  margin-top: var(--space-6);
+  padding-top: var(--space-5);
+  border-top: 1px solid rgba(16, 185, 129, 0.12);
+}
+
+.gh-repos-grid.repos-three-col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+
+.gh-repo-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-5);
+  background: rgba(10, 18, 36, 0.7);
+  border: 1px solid rgba(16, 185, 129, 0.14);
+  border-radius: var(--radius-lg);
+  transition: transform var(--transition-normal), border-color var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.gh-repo-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(16, 185, 129, 0.4);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.repo-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.repo-name-wrap {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.repo-name {
+  color: var(--text-primary);
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.repo-name:hover {
+  color: #34d399;
+}
+
+.gh-flagship-pill {
+  font-size: 0.65rem;
+  padding: 0.1rem 0.45rem;
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: var(--radius-full);
+}
+
+.repo-link-glyph {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  transition: color var(--transition-fast);
+}
+
+.gh-link-glyph:hover {
+  color: #34d399;
+}
+
+.repo-desc {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0 0 var(--space-4);
+  flex-grow: 1;
+}
+
+.repo-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--space-3);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.repo-lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+}
+
+.lang-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.repo-meta-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.repo-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+}
+
+.meta-icon {
+  font-size: 0.8rem;
+}
+
+/* ==========================================================================
+   INTER-PLATFORM TRANSITION DIVIDER
+   ========================================================================== */
+
+.platform-transition-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: var(--space-8) 0;
+  gap: var(--space-4);
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(56, 189, 248, 0.18) 50%, transparent 100%);
+}
+
+.divider-glyph {
+  padding: 0.25rem 0.8rem;
+  background: rgba(14, 24, 48, 0.85);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  color: var(--accent-blue-light);
+  letter-spacing: 0.15em;
+}
+
+/* ==========================================================================
+   PART B: LEETCODE SUBMISSION HEATMAP (Preserved Yellow/Amber Identity)
+   ========================================================================== */
+
+.lc-heatmap-wrapper {
+  padding: var(--space-5);
+  background: rgba(7, 13, 27, 0.65);
+  border: 1px solid rgba(245, 158, 11, 0.18);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.lc-heatmap-meta-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid rgba(245, 158, 11, 0.14);
+  margin-bottom: var(--space-3);
+}
+
+.lc-heatmap-heading-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.lc-heatmap-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.lc-heatmap-subtitle {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+}
+
+.lc-heatmap-stats-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.lc-strip-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.55rem;
+  background: rgba(14, 24, 48, 0.7);
+  border: 1px solid rgba(245, 158, 11, 0.22);
+  border-radius: var(--radius-sm);
+  font-size: 0.68rem;
+}
+
+.lc-heatmap-scroll-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: var(--space-2) 0 0.65rem 0;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(245, 158, 11, 0.45) rgba(255, 255, 255, 0.05);
+}
+
+.lc-heatmap-scroll-container::-webkit-scrollbar {
+  height: 5px;
+}
+
+.lc-heatmap-scroll-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 999px;
+}
+
+.lc-heatmap-scroll-container::-webkit-scrollbar-thumb {
+  background: rgba(245, 158, 11, 0.4);
+  border-radius: 999px;
+}
+
+.lc-heatmap-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(245, 158, 11, 0.7);
+}
+
+.lc-heatmap-scroll-container:focus-visible {
+  box-shadow: 0 0 0 2px #f59e0b;
+  border-radius: var(--radius-sm);
+}
+
+.lc-heatmap-matrix {
+  min-width: 820px;
+  width: max-content;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Month Labels Row — gap matches heatmap body */
+.lc-month-labels-row {
+  display: flex;
+  gap: 6px;
+  height: 18px;
+  position: relative;
+}
+
+.lc-day-label-gutter {
+  width: 32px;
+  flex-shrink: 0;
+}
+
+.lc-month-labels-track {
+  position: relative;
+  flex: 1;
+  height: 100%;
+}
+
+.lc-month-label {
+  position: absolute;
+  top: 0;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  user-select: none;
+  white-space: nowrap;
+}
+
+.lc-heatmap-body {
+  display: flex;
+  gap: 6px;
+}
+
+.lc-day-labels-col {
+  width: 32px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.lc-day-lbl {
+  height: 12px;
+  line-height: 12px;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  user-select: none;
+}
+
+.lc-day-lbl.day-empty {
+  visibility: hidden;
+}
+
+.lc-weeks-track {
+  display: flex;
+  gap: 3px;
+  flex: 1;
+}
+
+.lc-week-column {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.lc-day-cell {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+  cursor: pointer;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.lc-day-cell:hover,
+.lc-day-cell:focus {
+  transform: scale(1.35);
+  z-index: 5;
+  border-color: #ffffff !important;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.8) !important;
+}
+
+.cell-level-0 {
+  background-color: #0c1424;
+  border: 1px solid rgba(245, 158, 11, 0.08);
+}
+
+.cell-level-1 {
+  background-color: rgba(245, 158, 11, 0.35);
+  border: 1px solid rgba(245, 158, 11, 0.45);
+}
+
+.cell-level-2 {
+  background-color: rgba(245, 158, 11, 0.60);
+  border: 1px solid rgba(245, 158, 11, 0.75);
+}
+
+.cell-level-3 {
+  background-color: rgba(245, 158, 11, 0.85);
+  border: 1px solid #fbbf24;
+  box-shadow: 0 0 4px rgba(245, 158, 11, 0.4);
+}
+
+.cell-level-4 {
+  background-color: #fbbf24;
+  border: 1px solid #ffffff;
+  box-shadow: 0 0 8px rgba(251, 191, 36, 0.6);
+}
+
+.lc-heatmap-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  padding-top: var(--space-2);
+  border-top: 1px solid rgba(245, 158, 11, 0.12);
+}
+
+.lc-heatmap-tooltip-display {
+  min-height: 18px;
+  display: flex;
+  align-items: center;
+}
+
+.tooltip-active {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #fbbf24;
+  font-weight: 600;
+  background: rgba(245, 158, 11, 0.12);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  font-size: 0.7rem;
+}
+
+.tooltip-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: #fbbf24;
+}
+
+.tooltip-idle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.7rem;
+}
+
+.lc-heatmap-legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.68rem;
+}
+
+.lc-legend-cell {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.lc-heatmap-fallback {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  background: rgba(14, 24, 48, 0.7);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: var(--radius-lg);
+}
+
+/* ==========================================================================
+   RESPONSIVE ADAPTATIONS
+   ========================================================================== */
+
+@media (max-width: 1100px) {
+  .platform-overview-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .lc-difficulty-grid.diff-three-col {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .gh-repos-grid.repos-three-col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile scroll hint indicator */
+.heatmap-mobile-scroll-hint {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .platform-card {
+    padding: var(--space-6) var(--space-5);
+  }
+
+  .gh-heatmap-scroll-container,
+  .lc-heatmap-scroll-container {
+    justify-content: flex-start;
+  }
+
+  .gh-heatmap-matrix,
+  .lc-heatmap-matrix {
+    margin: 0 !important;
+  }
+
+  .lc-difficulty-grid.diff-three-col {
+    grid-template-columns: 1fr;
+  }
+
+  .gh-repos-grid.repos-three-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .platform-card {
+    padding: var(--space-5) var(--space-4);
+  }
+
+  .heatmap-mobile-scroll-hint {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    margin-bottom: 0.35rem;
+    opacity: 0.85;
+    letter-spacing: 0.02em;
+  }
+
+  .gh-heatmap-wrapper,
+  .lc-heatmap-wrapper {
+    padding: 1.15rem 0.85rem;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .platform-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .profile-cta-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .platform-overview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gh-heatmap-meta-header,
+  .lc-heatmap-meta-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .gh-heatmap-footer,
+  .lc-heatmap-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .gh-heatmap-wrapper,
+  .lc-heatmap-wrapper {
+    padding: 1rem 0.65rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .activity-editorial-section {
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-12);
+  }
+
+  .platform-card {
+    padding: 1.15rem 0.85rem;
+  }
+
+  .metric-stat-box {
+    padding: 0.65rem 0.75rem;
+  }
+}

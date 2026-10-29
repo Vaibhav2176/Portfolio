@@ -1,117 +1,848 @@
-/* .container is defined here as it's shared across components */
-.container {
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
+/* ==========================================================================
+   ABOUT SECTION — CINEMATIC, IMMERSIVE, BALANCED (FINAL POLISH)
+   ========================================================================== */
 
-.section-header {
-  margin-bottom: 3rem;
-  text-align: left;
-}
-
-.section-title {
-  font-size: clamp(2rem, 5vw, 3rem);
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-}
-
-.section-line {
-  height: 4px;
-  width: 60px;
-  background: linear-gradient(90deg, var(--primary-neon), var(--secondary-neon));
-  border-radius: 2px;
-}
-
-.about-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  align-items: stretch;
-}
-
-.about-code-block {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  border-radius: 10px;
+.about-editorial-section {
+  position: relative;
   overflow: hidden;
-  background: rgba(15, 23, 42, 0.7);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  padding-top: clamp(6rem, 9vw, 9rem);
+  padding-bottom: clamp(6rem, 9vw, 9rem);
+  background-color: #060a14;
+  z-index: 2;
+  border: none;
 }
 
-.about-code-block .terminal-header {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 0.8rem 1rem;
-  display: flex;
-  gap: 8px;
+/* --- Atmospheric 3D Background Canvas (Perspective Grid & Floating Panels) --- */
+.about-3d-canvas-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.95;
+}
+
+/* Depth Plane Gradient: Seamless transition from hero without obscuring 3D elements */
+.about-depth-plane-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    #060a14 0%,
+    rgba(6, 10, 20, 0.1) 20%,
+    rgba(6, 10, 20, 0.4) 75%,
+    #060a14 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Fine architectural perspective lines extending into the margins */
+.about-architectural-lines {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, rgba(56, 189, 248, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(56, 189, 248, 0.025) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 90% 75% at 50% 50%, rgba(0, 0, 0, 0.8) 0%, transparent 90%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 75% at 50% 50%, rgba(0, 0, 0, 0.8) 0%, transparent 90%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Soft ambient cyan radial wash behind content */
+.about-ambient-wash {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(1300px, 96vw);
+  height: 650px;
+  background: radial-gradient(ellipse 65% 55% at 50% 50%, rgba(56, 189, 248, 0.06) 0%, rgba(56, 189, 248, 0.02) 40%, transparent 75%);
+  pointer-events: none;
+}
+
+.about-container {
+  position: relative;
+  z-index: 3;
+}
+
+/* ==========================================================================
+   UPPER COMPOSITION: BALANCED SPLIT LAYOUT
+   Left: Narrative | Right: Developer Profile Panel
+   ========================================================================== */
+
+.about-header-split {
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: var(--space-12);
   align-items: center;
-  border-bottom: 1px solid var(--glass-border);
+  margin-bottom: var(--space-12);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: 
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.file-name {
-  color: #94a3b8;
-  font-size: 0.85rem;
-  margin-left: 1rem;
-  font-family: var(--font-mono);
+.about-editorial-section.is-revealed .about-header-split {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.code-content {
-  padding: 2rem;
-  font-size: 1rem;
-  line-height: 1.8;
-  color: #e2e8f0;
+/* Left Narrative Copy */
+.about-header-copy {
+  max-width: 740px;
 }
 
-.indent-1 { margin-left: 2rem; }
-.indent-2 { margin-left: 4rem; }
+.about-main-title {
+  color: #ffffff;
+  font-size: clamp(2.3rem, 3.8vw, 3.5rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-top: var(--space-3);
+  margin-bottom: var(--space-5);
+}
 
-.property { color: #93c5fd; }
-.keyword { color: #ec4899; }
-.variable { color: #3b82f6; }
-.string { color: #60a5fa; }
-.function { color: #fbbf24; }
-
-.about-highlights {
+.about-intro-narrative {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: var(--space-4);
+}
+
+.about-narrative-paragraph {
+  color: #cbd5e1;
+  font-size: clamp(1.02rem, 1.18vw, 1.14rem);
+  line-height: 1.74;
+  letter-spacing: -0.01em;
+}
+
+.about-narrative-paragraph strong {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   RIGHT-SIDE: DEVELOPER PROFILE PANEL (PERSONAL CONTEXT & APPROACH)
+   ========================================================================== */
+
+.about-profile-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1.6rem, 2.2vw, 2rem);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, rgba(10, 20, 38, 0.95) 0%, rgba(6, 11, 24, 0.98) 100%);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  box-shadow: 
+    0 20px 48px -12px rgba(0, 0, 0, 0.65),
+    0 0 24px rgba(56, 189, 248, 0.08);
+  transform-style: preserve-3d;
+  transition: 
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.28s ease,
+    box-shadow 0.28s ease;
+}
+
+.about-profile-panel:hover {
+  border-color: rgba(56, 189, 248, 0.48);
+  box-shadow: 
+    0 24px 56px -10px rgba(0, 0, 0, 0.72),
+    0 0 32px rgba(56, 189, 248, 0.16);
+}
+
+/* Top hairline highlight beam */
+.profile-panel-top-beam {
+  position: absolute;
+  top: 0;
+  left: 15%;
+  right: 15%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.75), transparent);
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0.4;
+  transition: opacity 0.3s ease, left 0.3s ease, right 0.3s ease;
+}
+
+.about-profile-panel:hover .profile-panel-top-beam {
+  opacity: 0.9;
+  left: 8%;
+  right: 8%;
+}
+
+/* Subtle corner architectural ticks */
+.panel-corner-tick {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border-color: rgba(56, 189, 248, 0.45);
+  border-style: solid;
+  pointer-events: none;
+  z-index: 3;
+  transition: border-color 0.25s ease;
+}
+
+.panel-corner-tick.top-left {
+  top: -1px;
+  left: -1px;
+  border-width: 2px 0 0 2px;
+  border-top-left-radius: var(--radius-lg);
+}
+
+.panel-corner-tick.bottom-right {
+  bottom: -1px;
+  right: -1px;
+  border-width: 0 2px 2px 0;
+  border-bottom-right-radius: var(--radius-lg);
+}
+
+.about-profile-panel:hover .panel-corner-tick {
+  border-color: #38bdf8;
+}
+
+/* Ambient Glare following pointer */
+.profile-panel-ambient-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    450px circle at var(--mouse-x, 50%) var(--mouse-y, 0px),
+    rgba(56, 189, 248, 0.08),
+    transparent 55%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.about-profile-panel:hover .profile-panel-ambient-glare {
+  opacity: 1;
+}
+
+/* Topbar */
+.profile-panel-topbar {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
+  margin-bottom: var(--space-4);
+  position: relative;
+  z-index: 2;
 }
 
-.developer-card {
-  padding: 1.5rem 2rem;
-  border-left: 4px solid var(--glass-border);
-  transition: all 0.3s ease;
-  background: linear-gradient(90deg, rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.4));
+.profile-panel-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #38bdf8;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-sm);
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.24);
 }
 
-.developer-card:hover {
-  border-left-color: var(--primary-neon);
-  transform: translateX(10px);
-  background: linear-gradient(90deg, rgba(168, 85, 247, 0.1), rgba(15, 23, 42, 0.4));
+.badge-icon {
+  font-size: 0.85rem;
 }
 
-.highlight-icon {
-  font-size: 2rem;
-  color: var(--primary-neon);
-  margin-bottom: 1rem;
+/* Identity Section */
+.profile-panel-identity {
+  position: relative;
+  z-index: 2;
+  margin-bottom: var(--space-4);
 }
 
-.highlight-card h4 {
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
-  color: var(--text-color);
+.profile-degree {
+  color: #ffffff;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 2px;
 }
 
-.highlight-card p {
+.profile-institution {
   color: #94a3b8;
-  font-size: 0.95rem;
-  line-height: 1.5;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
 }
 
-@media (max-width: 992px) {
-  .about-content {
+.profile-academic-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.45rem;
+  font-size: 0.72rem;
+}
+
+.meta-tag {
+  color: #94a3b8;
+  letter-spacing: 0.04em;
+}
+
+.meta-tag.highlight-cyan {
+  color: #38bdf8;
+  font-weight: 700;
+}
+
+.meta-divider {
+  color: #475569;
+  user-select: none;
+}
+
+.profile-panel-divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin-bottom: var(--space-4);
+  position: relative;
+  z-index: 2;
+}
+
+/* Context Blocks: Beyond the Code & Approach */
+.profile-context-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-bottom: var(--space-4);
+  position: relative;
+  z-index: 2;
+}
+
+.profile-context-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #7dd3fc;
+}
+
+.profile-context-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.profile-context-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  font-size: 0.82rem;
+  color: #cbd5e1;
+  line-height: 1.45;
+}
+
+.context-item-bullet {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow: 0 0 6px rgba(56, 189, 248, 0.6);
+  flex-shrink: 0;
+  transform: translateY(-2px);
+}
+
+/* Code-Inspired Technical Snippet */
+.profile-code-snippet {
+  background: rgba(4, 9, 20, 0.75);
+  border: 1px solid rgba(56, 189, 248, 0.15);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.85rem;
+  font-size: 0.73rem;
+  line-height: 1.6;
+  position: relative;
+  z-index: 2;
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.code-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.22rem;
+}
+
+.code-line.indent {
+  padding-left: 0.95rem;
+}
+
+.token-keyword {
+  color: #7dd3fc;
+  font-weight: 600;
+}
+
+.token-var {
+  color: #f8fafc;
+}
+
+.token-prop {
+  color: #94a3b8;
+}
+
+.token-str {
+  color: #34d399;
+}
+
+.token-op,
+.token-colon,
+.token-comma,
+.token-semicolon,
+.token-brace,
+.token-bracket {
+  color: #64748b;
+}
+
+/* ==========================================================================
+   LOWER ROW: THREE ENGINEERING-FOCUS CARDS (CENTERPIECE)
+   Distinct 3-Color Accent System:
+   Card 1: Cyan / Blue (#38bdf8)
+   Card 2: Violet / Indigo (#a78bfa)
+   Card 3: Emerald Green (#34d399)
+   ========================================================================== */
+
+.about-pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-8);
+  align-items: stretch;
+  perspective: 1200px;
+}
+
+.about-pillar-feature-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1.85rem, 2.3vw, 2.25rem);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.55);
+  transform-style: preserve-3d;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: 
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.28s ease,
+    box-shadow 0.28s ease,
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.about-editorial-section.is-revealed .about-pillar-feature-card {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: var(--stagger-delay, 0ms);
+}
+
+.about-pillar-feature-card:hover,
+.about-profile-panel:hover {
+  transition: border-color 0.28s ease, box-shadow 0.28s ease;
+  will-change: transform;
+}
+
+/* Subtle Layered 3D Depth on Card Inner Elements */
+.card-top-row {
+  transform: translateZ(12px);
+  transform-style: preserve-3d;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+  position: relative;
+  z-index: 2;
+}
+
+.pillar-header-group {
+  transform: translateZ(16px);
+  transform-style: preserve-3d;
+  margin-bottom: var(--space-3);
+  position: relative;
+  z-index: 2;
+}
+
+.pillar-feature-description {
+  transform: translateZ(8px);
+  transform-style: preserve-3d;
+  color: #cbd5e1;
+  font-size: 0.92rem;
+  line-height: 1.62;
+  margin-bottom: var(--space-5);
+  position: relative;
+  z-index: 2;
+}
+
+.pillar-tenets-list {
+  transform: translateZ(12px);
+  transform-style: preserve-3d;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: auto;
+  padding-top: var(--space-4);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  z-index: 2;
+}
+
+/* Top Hairline Glow Beam for Cards */
+.card-top-beam {
+  position: absolute;
+  top: 0;
+  left: 15%;
+  right: 15%;
+  height: 1px;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0.45;
+  transition: opacity 0.3s ease, left 0.3s ease, right 0.3s ease;
+}
+
+.about-pillar-feature-card:hover .card-top-beam {
+  opacity: 0.95;
+  left: 8%;
+  right: 8%;
+}
+
+/* Architectural Corner Markers */
+.card-corner-marker {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border-style: solid;
+  pointer-events: none;
+  z-index: 3;
+  transition: border-color 0.25s ease;
+}
+
+.card-corner-marker.top-left {
+  top: -1px;
+  left: -1px;
+  border-width: 2px 0 0 2px;
+  border-top-left-radius: var(--radius-lg);
+}
+
+.card-corner-marker.bottom-right {
+  bottom: -1px;
+  right: -1px;
+  border-width: 0 2px 2px 0;
+  border-bottom-right-radius: var(--radius-lg);
+}
+
+/* Ambient Glare following pointer */
+.card-ambient-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.about-pillar-feature-card:hover .card-ambient-glare {
+  opacity: 1;
+}
+
+/* --------------------------------------------------------------------------
+   CARD 1 SPECIFIC STYLING: FULL-STACK WEB ENGINEERING (CYAN / BLUE)
+   -------------------------------------------------------------------------- */
+.card-fullstack {
+  background: linear-gradient(180deg, rgba(8, 22, 44, 0.88) 0%, rgba(6, 11, 24, 0.94) 100%);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.card-fullstack .card-top-beam {
+  background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.8), transparent);
+}
+
+.card-fullstack .card-corner-marker {
+  border-color: rgba(56, 189, 248, 0.45);
+}
+
+.card-fullstack:hover {
+  border-color: rgba(56, 189, 248, 0.52);
+  box-shadow: 
+    0 24px 50px -12px rgba(0, 0, 0, 0.7),
+    0 0 32px rgba(56, 189, 248, 0.16);
+}
+
+.card-fullstack:hover .card-corner-marker {
+  border-color: #38bdf8;
+}
+
+.card-fullstack .card-ambient-glare {
+  background: radial-gradient(
+    480px circle at var(--mouse-x, 50%) var(--mouse-y, 0px),
+    rgba(56, 189, 248, 0.13),
+    transparent 60%
+  );
+}
+
+.card-fullstack .pillar-motif-pill {
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  color: #38bdf8;
+}
+
+.card-fullstack .pillar-motif-icon {
+  color: #38bdf8;
+}
+
+.card-fullstack .pillar-feature-tagline {
+  color: #38bdf8;
+}
+
+.card-fullstack .tenet-icon {
+  color: #38bdf8;
+}
+
+/* --------------------------------------------------------------------------
+   CARD 2 SPECIFIC STYLING: CORE CS & PROBLEM SOLVING (VIOLET / INDIGO)
+   -------------------------------------------------------------------------- */
+.card-algorithms {
+  background: linear-gradient(180deg, rgba(22, 16, 46, 0.88) 0%, rgba(8, 10, 26, 0.94) 100%);
+  border: 1px solid rgba(167, 139, 250, 0.2);
+}
+
+.card-algorithms .card-top-beam {
+  background: linear-gradient(90deg, transparent, rgba(167, 139, 250, 0.8), transparent);
+}
+
+.card-algorithms .card-corner-marker {
+  border-color: rgba(167, 139, 250, 0.45);
+}
+
+.card-algorithms:hover {
+  border-color: rgba(167, 139, 250, 0.52);
+  box-shadow: 
+    0 24px 50px -12px rgba(0, 0, 0, 0.7),
+    0 0 32px rgba(167, 139, 250, 0.16);
+}
+
+.card-algorithms:hover .card-corner-marker {
+  border-color: #a78bfa;
+}
+
+.card-algorithms .card-ambient-glare {
+  background: radial-gradient(
+    480px circle at var(--mouse-x, 50%) var(--mouse-y, 0px),
+    rgba(167, 139, 250, 0.13),
+    transparent 60%
+  );
+}
+
+.card-algorithms .pillar-motif-pill {
+  background: rgba(167, 139, 250, 0.08);
+  border: 1px solid rgba(167, 139, 250, 0.25);
+  color: #a78bfa;
+}
+
+.card-algorithms .pillar-motif-icon {
+  color: #a78bfa;
+}
+
+.card-algorithms .pillar-feature-tagline {
+  color: #a78bfa;
+}
+
+.card-algorithms .tenet-icon {
+  color: #a78bfa;
+}
+
+/* --------------------------------------------------------------------------
+   CARD 3 SPECIFIC STYLING: APPLIED AI & INNOVATION (EMERALD GREEN)
+   -------------------------------------------------------------------------- */
+.card-applied-ai {
+  background: linear-gradient(180deg, rgba(8, 26, 26, 0.88) 0%, rgba(6, 13, 19, 0.94) 100%);
+  border: 1px solid rgba(52, 211, 153, 0.2);
+}
+
+.card-applied-ai .card-top-beam {
+  background: linear-gradient(90deg, transparent, rgba(52, 211, 153, 0.8), transparent);
+}
+
+.card-applied-ai .card-corner-marker {
+  border-color: rgba(52, 211, 153, 0.45);
+}
+
+.card-applied-ai:hover {
+  border-color: rgba(52, 211, 153, 0.52);
+  box-shadow: 
+    0 24px 50px -12px rgba(0, 0, 0, 0.7),
+    0 0 32px rgba(52, 211, 153, 0.16);
+}
+
+.card-applied-ai:hover .card-corner-marker {
+  border-color: #34d399;
+}
+
+.card-applied-ai .card-ambient-glare {
+  background: radial-gradient(
+    480px circle at var(--mouse-x, 50%) var(--mouse-y, 0px),
+    rgba(52, 211, 153, 0.13),
+    transparent 60%
+  );
+}
+
+.card-applied-ai .pillar-motif-pill {
+  background: rgba(52, 211, 153, 0.08);
+  border: 1px solid rgba(52, 211, 153, 0.25);
+  color: #34d399;
+}
+
+.card-applied-ai .pillar-motif-icon {
+  color: #34d399;
+}
+
+.card-applied-ai .pillar-feature-tagline {
+  color: #34d399;
+}
+
+.card-applied-ai .tenet-icon {
+  color: #34d399;
+}
+
+/* --------------------------------------------------------------------------
+   SHARED CARD CONTENT TYPOGRAPHY & ELEMENTS
+   -------------------------------------------------------------------------- */
+.pillar-motif-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-sm);
+  transition: border-color 0.25s ease, background-color 0.25s ease;
+}
+
+.pillar-motif-icon {
+  font-size: 0.95rem;
+}
+
+.pillar-feature-title {
+  color: #ffffff;
+  font-size: clamp(1.22rem, 1.45vw, 1.45rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  margin-bottom: 3px;
+}
+
+.pillar-feature-tagline {
+  font-size: 0.76rem;
+  letter-spacing: 0.02em;
+  line-height: 1.45;
+}
+
+.tenet-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #94a3b8;
+}
+
+.tenet-item strong {
+  color: #f1f5f9;
+  font-weight: 600;
+}
+
+.tenet-icon {
+  font-size: 0.92rem;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   RESPONSIVENESS & ACCESSIBILITY (REDUCED MOTION)
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .about-header-split {
     grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  .about-profile-panel {
+    max-width: 540px;
+    transform: none !important;
+  }
+
+  .about-pillars-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  .about-pillar-feature-card {
+    transform: none !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .about-editorial-section {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+
+  .about-main-title {
+    font-size: clamp(1.95rem, 6.5vw, 2.4rem);
+  }
+
+  .about-narrative-paragraph {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .about-pillar-feature-card,
+  .about-profile-panel {
+    padding: var(--space-6);
+  }
+
+  .profile-context-item {
+    font-size: 0.78rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .about-editorial-section {
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-12);
+  }
+
+  .about-pillar-feature-card,
+  .about-profile-panel {
+    padding: 1.15rem 0.95rem;
+  }
+
+  .profile-name-role {
+    font-size: 1.05rem;
+  }
+
+  .pillar-card-title {
+    font-size: 1.05rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-header-split,
+  .about-pillar-feature-card,
+  .about-profile-panel {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .about-3d-canvas-container {
+    opacity: 0.4;
   }
 }

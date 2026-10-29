@@ -1,182 +1,1519 @@
-.hero-section {
+/* ==========================================================================
+   CINEMATIC DEVELOPER HERO STYLING — FINAL EDITORIAL COMPOSITION
+   Asset: "Cinematic Blue-Toned Professional Portrait.png"
+   Direction: Natural upright environmental portrait, solid white monumental name,
+              seamless left-edge dissolve, zero floating code windows, zero fake telemetry.
+   ========================================================================== */
+
+/* --- 1. Full-Bleed Panoramic Hero Stage --- */
+.hero-editorial-section {
   position: relative;
+  width: 100%;
   min-height: 100vh;
-  padding-bottom: 4rem;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #060a14;
   overflow: hidden;
+  z-index: 1;
 }
 
-.particles-container {
+/* Three.js Spatial Atmosphere Layer */
+.hero-3d-canvas-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.95;
+}
+
+/* --- 2. Panoramic Architectural Window Frames --- */
+.hero-window-frames {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.28;
+}
+
+.window-frame-line {
   position: absolute;
   top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.02) 60%,
+    transparent 100%
+  );
+}
+
+.frame-left   { left: 26%; }
+.frame-center { left: 50%; }
+.frame-right  { left: 78%; }
+
+.window-frame-horizontal {
+  position: absolute;
+  top: 15%;
   left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    transparent 100%
+  );
 }
 
-#tsparticles {
-  width: 100%;
-  height: 100%;
-}
-
-.hero-content {
-  position: relative;
-  z-index: 10;
-  text-align: center;
-  max-width: 800px;
-  padding: 80px 2rem 0 2rem;
-}
-
-.greeting {
-  font-size: 1.2rem;
-  color: var(--primary-neon);
-  font-weight: 500;
-  letter-spacing: 2px;
-  display: block;
-  margin-bottom: 1rem;
-  text-transform: uppercase;
-}
-
-.name {
-  font-size: clamp(3rem, 8vw, 5rem);
-  font-weight: 800;
-  line-height: 1.1;
-  margin-bottom: 1rem;
-  color: var(--text-color);
-  animation: float 6s ease-in-out infinite;
-  text-shadow: 0 0 30px rgba(56, 189, 248, 0.4);
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-.title-wrapper {
-  height: 60px; /* Fixed height to prevent layout shift */
-  margin-bottom: 2rem;
-}
-
-.title {
-  font-size: clamp(1.2rem, 3.5vw, 2rem);
-  font-weight: 500;
-}
-
-.terminal-window {
-  text-align: left;
-  max-width: 500px;
-  margin: 0 auto 2.5rem auto;
-  border-radius: 10px;
+/* --- 3. Dual-Tone Environmental Light Washes (Zero blur filter overhead) --- */
+.hero-background-washes {
+  position: absolute;
+  inset: 0;
   overflow: hidden;
-  background: rgba(15, 23, 42, 0.7);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(168, 85, 247, 0.1);
+  pointer-events: none;
+  z-index: 2;
 }
 
-.terminal-header {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 0.8rem 1rem;
-  display: flex;
-  gap: 8px;
-  border-bottom: 1px solid var(--glass-border);
-}
-
-.dot {
-  width: 12px;
-  height: 12px;
+.hero-light-wash-cyan {
+  position: absolute;
+  top: 15%;
+  left: 0;
+  width: min(650px, 90vw);
+  height: min(650px, 90vw);
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.11) 0%, rgba(56, 189, 248, 0.05) 30%, rgba(37, 99, 235, 0.02) 55%, transparent 72%);
+  pointer-events: none;
+  z-index: 2;
   border-radius: 50%;
 }
 
-.dot.red { background-color: #ff5f56; }
-.dot.yellow { background-color: #ffbd2e; }
-.dot.green { background-color: #27c93f; }
-
-.terminal-body {
-  padding: 1.5rem;
-  font-size: 0.95rem;
-  line-height: 1.7;
-  color: #e2e8f0;
+.hero-light-wash-amber {
+  position: absolute;
+  top: 30%;
+  right: 6%;
+  width: 580px;
+  height: 580px;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.14) 0%, rgba(217, 119, 6, 0.06) 30%, rgba(217, 119, 6, 0.02) 55%, transparent 72%);
+  pointer-events: none;
+  z-index: 2;
+  border-radius: 50%;
 }
 
-.keyword { color: #ec4899; }
-.variable { color: #3b82f6; }
-.string { color: #10b981; }
-.comment { color: #64748b; font-style: italic; }
-.function { color: #fbbf24; }
-
-.mt-2 { margin-top: 0.5rem; }
-.mt-4 { margin-top: 1.5rem; }
-
-.cursor-blink {
-  animation: blink 1s step-end infinite;
-  color: #e2e8f0;
-  font-weight: bold;
-  margin-left: 2px;
+/* --- 4. Foreground Ambient Silhouette Vignettes --- */
+.hero-vignette-left {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle at bottom left, rgba(6, 10, 20, 0.98) 0%, rgba(6, 10, 20, 0.6) 45%, transparent 75%);
+  pointer-events: none;
+  z-index: 8;
 }
 
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+.hero-vignette-right {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 280px;
+  height: 260px;
+  background: radial-gradient(circle at bottom right, rgba(14, 10, 4, 0.98) 0%, rgba(14, 10, 4, 0.6) 45%, transparent 75%);
+  pointer-events: none;
+  z-index: 8;
 }
 
-.hero-buttons {
+/* --- 5. Main Hero Viewport Grid --- */
+.hero-editorial-viewport {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1680px;
+  /* Viewport-aware padding accounting strictly for 72px navbar height without excessive vertical dead space */
+  padding: calc(72px + 1rem) 5vw 3.25rem 6vw;
+  display: grid;
+  grid-template-columns: 1.08fr 0.92fr;
+  align-items: center;
+  gap: 3.5vw;
+  box-sizing: border-box;
+}
+
+/* --- 6. Left Column: Pure, Confident Typography --- */
+.hero-editorial-copy {
   display: flex;
-  gap: 1.5rem;
-  justify-content: center;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  z-index: 10;
 }
 
-.btn {
+/* Eyebrow: Restrained, uppercase with subtle rule */
+.hero-eyebrow-group {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.8rem 1.8rem;
-  font-size: 1rem;
+  gap: 1.25rem;
+  margin-bottom: 0.65rem;
+}
+
+.hero-eyebrow-label {
+  font-size: 0.8rem;
   font-weight: 600;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  letter-spacing: 0.14em;
+  color: #38bdf8;
+  text-transform: uppercase;
+}
+
+.hero-eyebrow-divider {
+  height: 1px;
+  width: 70px;
+  background: linear-gradient(90deg, #38bdf8 0%, rgba(56, 189, 248, 0.4) 60%, transparent 100%);
+}
+
+/* Focal Point: Solid Crisp White Monumental Name */
+.hero-name-container {
+  margin-bottom: 0.65rem;
+}
+
+.hero-editorial-name {
+  font-family: var(--font-heading, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: clamp(3.5rem, 6.2vw, 6.25rem);
+  font-weight: 800;
+  line-height: 0.93;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  text-transform: uppercase;
+  /* Clean, crisp text without glowing halo, metallic gradient, or exaggerated shadow */
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+}
+
+.name-row {
+  display: block;
+  width: fit-content;
+}
+
+.hero-name-text {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  line-height: inherit;
+}
+
+/* Professional Identity Line: Exactly three roles */
+.hero-editorial-subrole {
+  font-size: clamp(0.78rem, 1.05vw, 0.88rem);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #38bdf8;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  line-height: 1.45;
+  white-space: normal;
+}
+
+/* Resume-Aligned Hero Introduction Paragraph (19-21px desktop, comfortable 1.56 line-height, natural ~3-line wrap) */
+.hero-editorial-intro {
+  font-size: clamp(1.1875rem, 1.35vw, 1.3rem);
+  color: #cbd5e1;
+  line-height: 1.56;
+  max-width: 635px;
+  margin-bottom: 1.65rem;
+  font-weight: 400;
+}
+
+/* Three Clear Actions */
+.hero-editorial-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.15rem;
+  margin-bottom: 1.25rem;
+}
+
+.hero-btn-primary {
+  padding: 0.85rem 1.95rem;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: #0284c7;
+  color: #ffffff;
+  border: 1px solid rgba(56, 189, 248, 0.65);
+  border-radius: var(--radius-full);
+  box-shadow: 0 4px 20px rgba(2, 132, 199, 0.45);
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.hero-btn-primary:hover {
+  background: #0369a1;
+  border-color: #38bdf8;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 28px rgba(56, 189, 248, 0.6);
+}
+
+.hero-btn-secondary {
+  padding: 0.85rem 1.75rem;
+  font-size: var(--text-sm);
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius-full);
+  color: #f8fafc;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.hero-btn-secondary:hover {
+  border-color: rgba(56, 189, 248, 0.5);
+  background: rgba(30, 41, 59, 0.95);
+  color: #38bdf8;
+  transform: translateY(-2px);
+}
+
+.hero-btn-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: #38bdf8;
   text-decoration: none;
+  padding: 0.5rem 0.85rem;
+  transition: color var(--transition-fast);
+  cursor: pointer;
 }
 
-.btn-primary {
-  background: linear-gradient(90deg, var(--primary-neon), var(--secondary-neon));
-  color: #000;
-  border: none;
-  box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3);
+.hero-btn-link:hover {
+  color: #7dd3fc;
+  text-decoration: underline;
 }
 
-.btn-primary:hover {
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 8px 30px rgba(56, 189, 248, 0.6);
+.action-icon {
+  font-size: 1.05rem;
 }
 
-.btn-secondary {
-  color: var(--text-color);
-  border: 1px solid var(--glass-border);
+.action-icon-sm {
+  font-size: 0.85rem;
 }
 
-.btn-secondary:hover {
-  background: rgba(56, 189, 248, 0.1);
-  border-color: var(--primary-neon);
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 8px 30px rgba(56, 189, 248, 0.3);
+/* Subtle Location Indicator */
+.hero-editorial-location {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.74rem;
+  color: #94a3b8;
+  padding-top: 0.35rem;
 }
 
-.btn-icon {
-  font-size: 1.2rem;
+.pin-icon {
+  color: #38bdf8;
+  font-size: 0.85rem;
 }
 
-@media (max-width: 768px) {
-  .hero-buttons {
+/* --- 7. Right Column: Custom Portfolio Portrait Asset --- */
+.hero-editorial-visual {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  width: 100%;
+}
+
+.hero-portrait-stage {
+  position: relative;
+  width: 100%;
+  max-width: 680px;
+  /* Balanced height preserving vertical space so scroll cue remains visible on laptops */
+  height: clamp(420px, 44vw, 560px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Seamless perimeter mask eliminating hard photographic edges */
+  -webkit-mask-image: radial-gradient(ellipse 90% 86% at 66% 46%, #000000 60%, transparent 100%);
+  mask-image: radial-gradient(ellipse 90% 86% at 66% 46%, #000000 60%, transparent 100%);
+}
+
+.hero-custom-portrait-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 72% center; /* Balances subject with right-side bokeh window reflections */
+  display: block;
+  filter: contrast(1.03) brightness(0.98);
+}
+
+/* Seamless Left-Edge Dissolve (Melts into the midnight background behind text) */
+.hero-portrait-fade-left {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 36%;
+  background: linear-gradient(
+    to right,
+    #060a14 0%,
+    rgba(6, 10, 20, 0.8) 35%,
+    rgba(6, 10, 20, 0.25) 70%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Natural Base Dissolve */
+.hero-portrait-fade-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 25%;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(6, 10, 20, 0.55) 45%,
+    #060a14 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Subtle Top Dissolve */
+.hero-portrait-fade-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 12%;
+  background: linear-gradient(
+    to top,
+    transparent 0%,
+    rgba(6, 10, 20, 0.5) 50%,
+    #060a14 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Subtle Right-Edge Dissolve */
+.hero-portrait-fade-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 14%;
+  background: linear-gradient(
+    to left,
+    #060a14 0%,
+    rgba(6, 10, 20, 0.5) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* --- 8. Floating Information Elements (Subtle Interface Anchors) --- */
+.hero-cards-container {
+  position: absolute;
+  inset: 0;
+  max-width: 680px;
+  margin: 0 auto;
+  pointer-events: none;
+  z-index: 12;
+}
+
+.hero-floating-card {
+  position: absolute;
+  z-index: 12;
+  background: rgba(6, 11, 24, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(56, 189, 248, 0.22);
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55), 0 0 1px rgba(56, 189, 248, 0.25);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  pointer-events: auto;
+}
+
+.hero-floating-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(56, 189, 248, 0.45);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.65), 0 0 12px rgba(56, 189, 248, 0.15);
+}
+
+/* Card A — Academic Profile Card (Lower-Right Stage) */
+.hero-card-academic {
+  bottom: 22px;
+  right: 18px;
+  padding: 0.65rem 0.9rem;
+  width: 225px;
+}
+
+.academic-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding-bottom: 0.35rem;
+  margin-bottom: 0.35rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.academic-card-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.7);
+  flex-shrink: 0;
+}
+
+.academic-card-title {
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #38bdf8;
+  text-transform: uppercase;
+}
+
+.academic-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+  margin-bottom: 0.35rem;
+}
+
+.academic-degree {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #f1f5f9;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.academic-institution {
+  font-size: 0.66rem;
+  color: #94a3b8;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.academic-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.35rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.cgpa-label {
+  font-size: 0.62rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.cgpa-value {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #38bdf8;
+  letter-spacing: 0.03em;
+}
+
+/* Card B — Engineering Stack (Lower-Left Stage) */
+.hero-card-stack {
+  bottom: 22px;
+  left: 18px;
+  padding: 0.6rem 0.85rem;
+  width: 205px;
+}
+
+.stack-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding-bottom: 0.35rem;
+  margin-bottom: 0.35rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.stack-card-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.7);
+  flex-shrink: 0;
+}
+
+.stack-card-title {
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #38bdf8;
+  text-transform: uppercase;
+}
+
+.stack-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.stack-row {
+  font-size: 0.68rem;
+  color: #e2e8f0;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+/* --- 9. Subtle Center Bottom Scroll Indicator --- */
+.hero-editorial-scroll-cue {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.scroll-cue-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  transition: color var(--transition-fast);
+  cursor: pointer;
+}
+
+.scroll-cue-link:hover {
+  color: #38bdf8;
+}
+
+.mouse-capsule {
+  width: 18px;
+  height: 28px;
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  padding-top: 4px;
+}
+
+.mouse-wheel {
+  width: 3px;
+  height: 6px;
+  background: #38bdf8;
+  border-radius: 2px;
+  animation: mouseWheelScroll 1.8s infinite;
+}
+
+@keyframes mouseWheelScroll {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(8px); opacity: 0; }
+}
+
+.scroll-cue-text {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+}
+
+.scroll-cue-chevron {
+  font-size: 0.9rem;
+  animation: floatChevronArrow 2.2s ease-in-out infinite;
+}
+
+@keyframes floatChevronArrow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+/* --- 9. Responsive Breakpoints --- */
+
+/* Laptops (1025px–1366px) — Strict Viewport-Aware Laptop Tuning */
+@media (max-width: 1366px) {
+  .hero-editorial-viewport {
+    padding-top: calc(72px + 0.65rem);
+    padding-bottom: 2.5rem;
+  }
+
+  .hero-editorial-name {
+    font-size: clamp(3.1rem, 5.2vw, 4.5rem);
+  }
+
+  .hero-editorial-intro {
+    font-size: clamp(1.1rem, 1.25vw, 1.22rem);
+    margin-bottom: 1.35rem;
+    max-width: 580px;
+  }
+
+  .hero-portrait-stage {
+    max-width: 560px;
+    height: clamp(380px, 42vw, 470px);
+  }
+
+  .hero-card-academic {
+    bottom: 16px;
+    right: 14px;
+    width: 225px;
+    padding: 0.55rem 0.75rem;
+  }
+
+  .hero-card-stack {
+    bottom: 16px;
+    left: 14px;
+    width: 195px;
+    padding: 0.55rem 0.75rem;
+  }
+
+  .hero-editorial-scroll-cue {
+    bottom: 12px;
+  }
+}
+
+/* Tablets & Small Laptops (769px–1024px) */
+@media (max-width: 1024px) {
+  .hero-editorial-section {
     flex-direction: column;
+    justify-content: flex-start;
+    height: auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  .hero-editorial-viewport {
+    grid-template-columns: 1fr;
+    gap: 2.25rem;
+    padding-top: calc(72px + 1.25rem);
+    padding-bottom: 2.5rem;
+    text-align: left;
+  }
+
+  /* Identity & Action Pathways FIRST on Mobile & Tablet */
+  .hero-editorial-copy {
+    order: 1;
+    align-items: flex-start;
+    text-align: left;
     width: 100%;
-    max-width: 300px;
+    max-width: 720px;
     margin: 0 auto;
   }
-  
-  .btn {
+
+  .hero-eyebrow-group {
+    justify-content: flex-start;
+  }
+
+  .hero-editorial-intro {
+    margin-left: 0;
+    margin-right: 0;
+    max-width: 620px;
+  }
+
+  .hero-editorial-actions {
+    justify-content: flex-start;
+  }
+
+  .hero-editorial-location {
+    justify-content: flex-start;
+  }
+
+  /* Visual SECOND: Grounds the composition naturally below the identity */
+  .hero-editorial-visual {
+    order: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 1.5rem;
+    margin-top: 0.25rem;
+    position: relative;
+  }
+
+  .hero-portrait-stage {
+    max-width: 480px;
+    height: clamp(320px, 44vw, 400px);
+    margin: 0 auto;
+    border-radius: 0;
+    overflow: visible;
+    background: none;
+    -webkit-mask-image: radial-gradient(ellipse 88% 84% at 50% 36%, #000000 50%, rgba(0, 0, 0, 0.7) 70%, transparent 100%);
+    mask-image: radial-gradient(ellipse 88% 84% at 50% 36%, #000000 50%, rgba(0, 0, 0, 0.7) 70%, transparent 100%);
+  }
+
+  .hero-portrait-fade-left {
+    width: 25%;
+  }
+
+  .hero-portrait-fade-bottom {
+    height: 30%;
+  }
+
+  .hero-cards-container {
+    position: relative;
+    inset: auto;
+    display: flex;
+    flex-direction: row;
     justify-content: center;
+    gap: 1.25rem;
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+    pointer-events: auto;
+  }
+
+  .hero-card-academic,
+  .hero-card-stack {
+    position: relative;
+    inset: auto;
+    bottom: auto;
+    left: auto;
+    right: auto;
+    flex: 1 1 0;
+    max-width: 250px;
+    width: 100%;
+    padding: 0.65rem 0.85rem;
+  }
+
+  .hero-editorial-scroll-cue {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    transform: none;
+    margin: 2.25rem auto 0 auto;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding-bottom: 0.5rem;
+  }
+}
+
+/* Mobile Devices (≤768px) */
+@media (max-width: 768px) {
+  .hero-editorial-section {
+    min-height: auto;
+    height: auto;
+    padding-bottom: 2rem;
+  }
+
+  .hero-editorial-viewport {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: calc(72px + 1rem) 1.25rem 1.5rem 1.25rem;
+    gap: 0;
+    width: 100%;
+  }
+
+  /* Flatten column wrappers on mobile so their children interleave organically */
+  .hero-editorial-copy,
+  .hero-editorial-visual {
+    display: contents;
+  }
+
+  /* 1. Restrained Eyebrow */
+  .hero-eyebrow-group {
+    order: 1;
+    margin-bottom: 0.55rem;
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .hero-eyebrow-label {
+    font-size: 0.74rem;
+  }
+
+  /* 2. Bold Monumental Name */
+  .hero-name-container {
+    order: 2;
+    margin-bottom: 0.35rem;
+    width: 100%;
+  }
+
+  .hero-editorial-name {
+    font-size: clamp(2.5rem, 11vw, 3.6rem);
+    line-height: 0.94;
+    text-align: left;
+  }
+
+  /* 3. Three-discipline Subrole */
+  .hero-editorial-subrole {
+    order: 3;
+    font-size: 0.76rem;
+    letter-spacing: 0.06em;
+    line-height: 1.45;
+    margin-bottom: 0.2rem;
+    text-align: left;
+  }
+
+  /* 4. Natural Environmental Portrait — Prominent Centered Visual Anchor */
+  .hero-portrait-stage {
+    order: 4;
+    position: relative;
+    align-self: center;
+    width: 100%;
+    max-width: min(340px, 90vw);
+    height: clamp(230px, 58vw, 270px);
+    margin: 0 auto 0.25rem auto;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-mask-image: radial-gradient(ellipse 88% 85% at 50% 32%, #000000 55%, rgba(0, 0, 0, 0.85) 72%, rgba(0, 0, 0, 0.25) 90%, transparent 100%);
+    mask-image: radial-gradient(ellipse 88% 85% at 50% 32%, #000000 55%, rgba(0, 0, 0, 0.85) 72%, rgba(0, 0, 0, 0.25) 90%, transparent 100%);
+  }
+
+  /* Ambient cinematic backlight bloom behind head */
+  .hero-portrait-stage::before {
+    content: '';
+    position: absolute;
+    top: 28%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.22) 0%, rgba(14, 165, 233, 0.07) 48%, transparent 72%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .hero-custom-portrait-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 70% 16%;
+    transform: scale(1.42);
+    transform-origin: 70% 16%;
+    display: block;
+    filter: contrast(1.03) brightness(0.98);
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Seamless perimeter dissolves that guarantee zero photographic edge lines on mobile */
+  .hero-portrait-fade-top {
+    display: block !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 18%;
+    background: linear-gradient(
+      to bottom,
+      #060a14 0%,
+      rgba(6, 10, 20, 0.9) 30%,
+      rgba(6, 10, 20, 0.4) 65%,
+      transparent 100%
+    );
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  .hero-portrait-fade-bottom {
+    display: block !important;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 15%;
+    background: linear-gradient(to bottom, transparent 0%, rgba(6, 10, 20, 0.75) 50%, #060a14 100%);
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  .hero-portrait-fade-left {
+    display: block !important;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 12%;
+    background: linear-gradient(to right, #060a14 0%, rgba(6, 10, 20, 0.75) 60%, transparent 100%);
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  .hero-portrait-fade-right {
+    display: block !important;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 12%;
+    background: linear-gradient(to left, #060a14 0%, rgba(6, 10, 20, 0.75) 60%, transparent 100%);
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  .hero-portrait-geometric-frame {
+    display: none !important;
+  }
+
+  .hero-vignette-left,
+  .hero-vignette-right {
+    display: none;
+  }
+
+  /* 5. Resume-Aligned Intro Paragraph */
+  .hero-editorial-intro {
+    order: 5;
+    font-size: clamp(0.98rem, 4.2vw, 1.08rem);
+    line-height: 1.58;
+    margin-top: 0;
+    margin-bottom: 1.15rem;
+    max-width: 100%;
+    text-align: left;
+  }
+
+  /* 6. Three Clear Actions */
+  .hero-editorial-actions {
+    order: 6;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    width: 100%;
+    margin-bottom: 1.15rem;
+  }
+
+  .hero-btn-primary,
+  .hero-btn-secondary {
+    flex: 1 1 calc(50% - 0.5rem);
+    min-width: 140px;
+    padding: 0.75rem 1.15rem;
+    font-size: 0.82rem;
+    justify-content: center;
+  }
+
+  .hero-btn-link {
+    width: 100%;
+    padding: 0.2rem 0;
+    justify-content: flex-start;
+  }
+
+  /* 7. Subtle Location Indicator */
+  .hero-editorial-location {
+    order: 7;
+    margin-bottom: 1.75rem;
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  /* 8. Supporting Proof Cards (Academic Profile & Engineering Stack) */
+  .hero-cards-container {
+    order: 8;
+    position: relative;
+    inset: auto;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+    gap: 0.85rem;
+    pointer-events: auto;
+  }
+
+  .hero-card-academic,
+  .hero-card-stack {
+    position: relative;
+    inset: auto;
+    bottom: auto;
+    left: auto;
+    right: auto;
+    width: 100%;
+    max-width: 100%;
+    padding: 0.75rem 1rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 1px rgba(56, 189, 248, 0.25);
+  }
+
+  .stack-card-header,
+  .academic-card-header {
+    margin-bottom: 0.35rem;
+    padding-bottom: 0.3rem;
+  }
+
+  .stack-card-title,
+  .academic-card-title {
+    font-size: 0.65rem;
+  }
+
+  .academic-card-body {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .academic-degree {
+    font-size: 0.74rem;
+  }
+
+  .academic-institution {
+    font-size: 0.68rem;
+  }
+
+  .academic-card-footer {
+    padding-top: 0.35rem;
+  }
+
+  .cgpa-label {
+    font-size: 0.62rem;
+  }
+
+  .cgpa-value {
+    font-size: 0.82rem;
+  }
+
+  .stack-card-body {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.65rem;
+  }
+
+  .stack-row {
+    font-size: 0.72rem;
+    color: #e2e8f0;
+  }
+
+  /* 9. Scroll Cue Indicator */
+  .hero-editorial-scroll-cue {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    transform: none;
+    margin: 2rem auto 0 auto;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding-bottom: 0.5rem;
+  }
+}
+
+/* Narrow Mobile (≤480px) */
+@media (max-width: 480px) {
+  .hero-editorial-viewport {
+    padding-left: 1.15rem;
+    padding-right: 1.15rem;
+  }
+
+  .hero-editorial-name {
+    font-size: clamp(2.2rem, 11.5vw, 3rem);
+  }
+
+  .hero-eyebrow-label {
+    font-size: 0.68rem;
+  }
+
+  .hero-portrait-stage {
+    max-width: min(320px, 92vw);
+    height: clamp(215px, 58vw, 250px);
+    margin: 0 auto 0.25rem auto;
+  }
+
+  .hero-portrait-stage::before {
+    width: 240px;
+    height: 240px;
+  }
+  .hero-btn-secondary {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+
+  .hero-cards-container {
+    max-width: 100%;
+    gap: 0.75rem;
+  }
+
+  .hero-card-academic,
+  .hero-card-stack {
+    padding: 0.7rem 0.9rem;
+  }
+
+  .academic-degree {
+    font-size: 0.70rem;
+  }
+
+  .academic-institution {
+    font-size: 0.65rem;
+  }
+
+  .cgpa-value {
+    font-size: 0.78rem;
+  }
+
+  .stack-row {
+    font-size: 0.68rem;
+  }
+}
+
+/* Extra-Narrow Mobile (≤360px) */
+@media (max-width: 360px) {
+  .hero-editorial-viewport {
+    padding-left: 0.85rem;
+    padding-right: 0.85rem;
+    padding-top: calc(72px + 0.5rem);
+    padding-bottom: 1.5rem;
+  }
+
+  .hero-editorial-name {
+    font-size: clamp(1.95rem, 11vw, 2.35rem);
+  }
+
+  .hero-editorial-intro {
+    font-size: 0.84rem;
+  }
+
+  .hero-portrait-stage {
+    max-width: 94vw;
+    height: clamp(190px, 58vw, 220px);
+    margin: 0 auto 0.2rem auto;
+  }
+
+  .hero-portrait-stage::before {
+    width: 200px;
+    height: 200px;
+  }
+
+  .hero-cards-container {
+  }
+
+  .hero-card-academic,
+  .hero-card-stack {
+    padding: 0.6rem 0.75rem;
+  }
+
+  .academic-card-body {
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .stack-card-body {
+    gap: 0.2rem 0.45rem;
+  }
+}
+
+/* Short Landscape Mobile Screens */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero-editorial-viewport {
+    padding-top: calc(64px + 0.5rem);
+    padding-bottom: 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .hero-portrait-stage {
+    height: 230px;
+    max-width: 300px;
+  }
+
+  .hero-cards-container {
+    flex-direction: row;
+    max-width: 600px;
+    gap: 0.75rem;
+  }
+
+  .hero-card-academic,
+  .hero-card-stack {
+    flex: 1 1 0;
+    max-width: none;
+  }
+
+  .hero-editorial-scroll-cue {
+    margin: 1.25rem auto 0.5rem auto;
+  }
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  .mouse-wheel,
+  .scroll-cue-chevron {
+    animation: none !important;
+  }
+
+  .hero-floating-card {
+    transition: none !important;
+  }
+}
+
+/* ==========================================================================
+   SHARED-NAME & HERO COORDINATED INTRO TRANSITIONS
+   ========================================================================== */
+
+/* Geometric Framing Aura & Cyan Light Sweep for Portrait */
+.hero-portrait-geometric-frame {
+  position: absolute;
+  inset: -1px;
+  border-radius: var(--radius-xl);
+  pointer-events: none;
+  z-index: 5;
+  border: 1px solid rgba(56, 189, 248, 0.45);
+  box-shadow: 0 0 25px rgba(56, 189, 248, 0.22), inset 0 0 18px rgba(56, 189, 248, 0.12);
+  opacity: 0;
+  overflow: hidden;
+}
+
+.geometric-frame-corner {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: #38bdf8;
+  border-style: solid;
+  pointer-events: none;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.8);
+}
+
+.geometric-frame-corner.corner-tl {
+  top: 4px;
+  left: 4px;
+  border-width: 2px 0 0 2px;
+  border-top-left-radius: 4px;
+}
+
+.geometric-frame-corner.corner-tr {
+  top: 4px;
+  right: 4px;
+  border-width: 2px 2px 0 0;
+  border-top-right-radius: 4px;
+}
+
+.geometric-frame-corner.corner-bl {
+  bottom: 4px;
+  left: 4px;
+  border-width: 0 0 2px 2px;
+  border-bottom-left-radius: 4px;
+}
+
+.geometric-frame-corner.corner-br {
+  bottom: 4px;
+  right: 4px;
+  border-width: 0 2px 2px 0;
+  border-bottom-right-radius: 4px;
+}
+
+.geometric-frame-sweep {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    transparent 20%,
+    rgba(56, 189, 248, 0.28) 48%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(56, 189, 248, 0.28) 52%,
+    transparent 80%
+  );
+  transform: translateX(-100%) translateY(-100%);
+  pointer-events: none;
+}
+
+/* 1. Loading State (Hidden behind 3D Loading Screen overlay) */
+.hero-editorial-section.intro-state-loading .hero-name-first,
+.hero-editorial-section.intro-state-loading .hero-name-last,
+.hero-editorial-section.intro-state-loading .hero-eyebrow-group,
+.hero-editorial-section.intro-state-loading .hero-editorial-subrole,
+.hero-editorial-section.intro-state-loading .hero-editorial-intro,
+.hero-editorial-section.intro-state-loading .hero-editorial-actions,
+.hero-editorial-section.intro-state-loading .hero-editorial-location,
+.hero-editorial-section.intro-state-loading .hero-custom-portrait-img,
+.hero-editorial-section.intro-state-loading .hero-floating-card,
+.hero-editorial-section.intro-state-loading .hero-portrait-geometric-frame,
+.hero-editorial-section.intro-state-loading .hero-editorial-scroll-cue {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* 2. Transitioning State (Coordinated staggered assembly around shared-name handoff) */
+.hero-editorial-section.intro-state-transitioning .hero-name-first {
+  opacity: 0; /* Remains invisible while flyer occupies its exact spatial bounds */
+  pointer-events: none;
+}
+
+/* AMULANI reveals as name reaches full scale */
+.hero-editorial-section.intro-state-transitioning .hero-name-last {
+  opacity: 0;
+  animation: heroStaggerReveal 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.54s forwards;
+}
+
+/* Portrait geometric frame reveals & sweeps right as name begins traveling, dissolving cleanly */
+.hero-editorial-section.intro-state-transitioning .hero-portrait-stage .hero-portrait-geometric-frame {
+  opacity: 0;
+  animation: heroPortraitGeometricCycle 0.70s cubic-bezier(0.16, 1, 0.3, 1) 0.64s forwards;
+}
+
+.hero-editorial-section.intro-state-transitioning .hero-portrait-stage .geometric-frame-sweep {
+  animation: geometricFrameSweepAnim 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.65s forwards;
+}
+
+/* Portrait photo emerges through the sweep */
+.hero-editorial-section.intro-state-transitioning .hero-portrait-stage .hero-custom-portrait-img {
+  opacity: 0;
+  animation: heroPortraitReveal 0.48s cubic-bezier(0.16, 1, 0.3, 1) 0.68s forwards;
+}
+
+/* Floating telemetry cards anchor around portrait */
+.hero-editorial-section.intro-state-transitioning .hero-floating-card {
+  opacity: 0;
+  animation: heroStaggerReveal 0.40s cubic-bezier(0.16, 1, 0.3, 1) 0.80s forwards;
+}
+
+/* Editorial eyebrow status */
+.hero-editorial-section.intro-state-transitioning .hero-eyebrow-group {
+  opacity: 0;
+  animation: heroStaggerReveal 0.38s cubic-bezier(0.16, 1, 0.3, 1) 0.82s forwards;
+}
+
+/* Subrole engineering discipline */
+.hero-editorial-section.intro-state-transitioning .hero-editorial-subrole {
+  opacity: 0;
+  animation: heroStaggerReveal 0.38s cubic-bezier(0.16, 1, 0.3, 1) 0.90s forwards;
+}
+
+/* Main intro paragraph */
+.hero-editorial-section.intro-state-transitioning .hero-editorial-intro {
+  opacity: 0;
+  animation: heroStaggerReveal 0.38s cubic-bezier(0.16, 1, 0.3, 1) 0.98s forwards;
+}
+
+/* CTA buttons and location indicator */
+.hero-editorial-section.intro-state-transitioning .hero-editorial-actions,
+.hero-editorial-section.intro-state-transitioning .hero-editorial-location {
+  opacity: 0;
+  animation: heroStaggerReveal 0.32s cubic-bezier(0.16, 1, 0.3, 1) 1.04s forwards;
+}
+
+/* Scroll cue indicator */
+.hero-editorial-section.intro-state-transitioning .hero-editorial-scroll-cue {
+  opacity: 0;
+  animation: heroFadeOnly 0.26s ease 1.10s forwards;
+}
+
+/* 3. Completed State (Clean static display for completed handoff & repeat visits) */
+.hero-editorial-section.intro-state-completed .hero-name-first,
+.hero-editorial-section.intro-state-completed .hero-name-last,
+.hero-editorial-section.intro-state-completed .hero-eyebrow-group,
+.hero-editorial-section.intro-state-completed .hero-editorial-subrole,
+.hero-editorial-section.intro-state-completed .hero-editorial-intro,
+.hero-editorial-section.intro-state-completed .hero-editorial-actions,
+.hero-editorial-section.intro-state-completed .hero-editorial-location,
+.hero-editorial-section.intro-state-completed .hero-custom-portrait-img,
+.hero-editorial-section.intro-state-completed .hero-floating-card {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.hero-editorial-section.intro-state-completed .hero-editorial-scroll-cue {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.hero-editorial-section.intro-state-completed .hero-portrait-stage .hero-portrait-geometric-frame {
+  display: none !important;
+  opacity: 0 !important;
+}
+
+@keyframes heroPortraitGeometricCycle {
+  0% {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+@keyframes geometricFrameSweepAnim {
+  0% {
+    transform: translateX(-100%) translateY(-100%);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%);
+  }
+}
+
+@keyframes heroPortraitReveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.97);
+    filter: brightness(1.22) contrast(1.1);
+  }
+  60% {
+    filter: brightness(1.08) contrast(1.04);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(1) contrast(1);
+  }
+}
+
+@keyframes heroStaggerReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroFadeOnly {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-portrait-geometric-frame {
+    display: none !important;
+    opacity: 0 !important;
+  }
+
+  .hero-editorial-section.intro-state-loading .hero-name-first,
+  .hero-editorial-section.intro-state-loading .hero-name-last,
+  .hero-editorial-section.intro-state-loading .hero-eyebrow-group,
+  .hero-editorial-section.intro-state-loading .hero-editorial-subrole,
+  .hero-editorial-section.intro-state-loading .hero-editorial-intro,
+  .hero-editorial-section.intro-state-loading .hero-editorial-actions,
+  .hero-editorial-section.intro-state-loading .hero-editorial-location,
+  .hero-editorial-section.intro-state-loading .hero-custom-portrait-img,
+  .hero-editorial-section.intro-state-loading .hero-floating-card,
+  .hero-editorial-section.intro-state-loading .hero-editorial-scroll-cue,
+  .hero-editorial-section.intro-state-transitioning .hero-name-first,
+  .hero-editorial-section.intro-state-transitioning .hero-name-last,
+  .hero-editorial-section.intro-state-transitioning .hero-eyebrow-group,
+  .hero-editorial-section.intro-state-transitioning .hero-editorial-subrole,
+  .hero-editorial-section.intro-state-transitioning .hero-editorial-intro,
+  .hero-editorial-section.intro-state-transitioning .hero-editorial-actions,
+  .hero-editorial-section.intro-state-transitioning .hero-editorial-location,
+  .hero-editorial-section.intro-state-transitioning .hero-custom-portrait-img,
+  .hero-editorial-section.intro-state-transitioning .hero-floating-card,
+  .hero-editorial-section.intro-state-transitioning .hero-editorial-scroll-cue {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    pointer-events: auto !important;
   }
 }

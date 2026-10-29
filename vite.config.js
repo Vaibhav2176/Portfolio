@@ -5,9 +5,25 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
 
-  base: "./", // ✅ Fixed relative paths for Vercel assets
+  base: "./", // Relative paths for Vercel assets
+
+  build: {
+    chunkSizeWarningLimit: 650,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          three: ['three'],
+          vendor: ['react', 'react-dom']
+        }
+      }
+    }
+  },
 
   server: {
+    watch: {
+      usePolling: true,
+      interval: 1000
+    },
     proxy: {
       '/api': {
         target: 'http://localhost:3000',

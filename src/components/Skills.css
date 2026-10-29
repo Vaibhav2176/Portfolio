@@ -1,89 +1,826 @@
-.skills-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 2rem;
-  margin-top: 3rem;
-}
+/* ==========================================================================
+   SKILLS SECTION — COMPLETE 8-CATEGORY RESUME MATRIX
+   Seamless continuation of Hero & About in midnight-blue (#060a14).
+   ========================================================================== */
 
-.skill-category {
-  flex: 1 1 320px;
-  max-width: 450px;
-  padding: 2rem;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.skill-category:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 40px 0 var(--glass-glow);
-}
-
-.category-title {
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
-  color: var(--primary-neon);
-  text-align: center;
+.skills-editorial-section {
   position: relative;
-  display: inline-block;
-  left: 50%;
-  transform: translateX(-50%);
+  overflow: hidden;
+  padding-top: clamp(6rem, 9vw, 9rem);
+  padding-bottom: clamp(6rem, 9vw, 9rem);
+  background-color: #060a14;
+  z-index: 2;
+  border: none;
 }
 
-.category-title::after {
-  content: '';
+/* --- Atmospheric 3D Background Canvas Container --- */
+.skills-3d-canvas-container {
   position: absolute;
-  bottom: -8px;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: var(--glass-border);
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.95;
 }
 
-.skills-badge-container {
+/* Atmospheric Depth Overlays Container */
+.skills-background-washes {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Depth Plane Gradient: Seamless blend into midnight-blue while letting 3D horizon shine */
+.skills-depth-plane-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    #060a14 0%,
+    rgba(6, 10, 20, 0.08) 18%,
+    rgba(6, 10, 20, 0.28) 75%,
+    #060a14 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Fine architectural grid lines extending to edges */
+.skills-architectural-lines {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, rgba(56, 189, 248, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(56, 189, 248, 0.025) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 90% 75% at 50% 50%, rgba(0, 0, 0, 0.85) 0%, transparent 90%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 75% at 50% 50%, rgba(0, 0, 0, 0.85) 0%, transparent 90%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Dual-Tone Ambient Lighting Washes */
+.skills-ambient-wash-cyan {
+  position: absolute;
+  top: 22%;
+  left: 6%;
+  width: min(700px, 60vw);
+  height: 550px;
+  background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(56, 189, 248, 0.065) 0%, rgba(56, 189, 248, 0.02) 40%, transparent 70%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.skills-ambient-wash-violet {
+  position: absolute;
+  top: 38%;
+  right: 6%;
+  width: min(700px, 60vw);
+  height: 550px;
+  background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(129, 140, 248, 0.055) 0%, rgba(129, 140, 248, 0.018) 40%, transparent 70%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.skills-container {
+  position: relative;
+  z-index: 3;
+  max-width: 1440px;
+}
+
+/* ==========================================================================
+   SECTION HEADER: LABEL, HEADING & UNDERSTATED SUBHEADING
+   ========================================================================== */
+
+.skills-header-copy {
+  margin-bottom: var(--space-8);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: 
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.skills-editorial-section.is-revealed .skills-header-copy {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.skills-main-title {
+  color: #ffffff;
+  font-size: clamp(2.3rem, 3.8vw, 3.5rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-top: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.skills-subheading {
+  font-size: clamp(0.85rem, 1vw, 0.95rem);
+  color: #94a3b8;
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ==========================================================================
+   CONTENT-DRIVEN ASYMMETRIC 12-COLUMN GRID:
+   Row 1: 01 (span 3) + 02 (span 5) + 03 (span 4) = 12
+   Row 2: 04 (span 7) + 05 (span 5) = 12
+   Row 3: 06 (span 5) + 07 (span 3) + 08 (span 4) = 12
+   Tablet (<= 1100px): 2 columns, all span 1
+   Mobile (<= 640px): 1 column, all span 1
+   ========================================================================== */
+
+.skills-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  align-items: start;
+  gap: var(--space-5);
+  perspective: 1200px;
+}
+
+/* Content-driven asymmetric column spans */
+.span-languages {
+  grid-column: span 3;
+}
+
+.span-frontend {
+  grid-column: span 5;
+}
+
+.span-backend {
+  grid-column: span 4;
+}
+
+.span-databases {
+  grid-column: span 7;
+}
+
+.span-ai {
+  grid-column: span 5;
+}
+
+.span-tools {
+  grid-column: span 5;
+}
+
+.span-infra {
+  grid-column: span 3;
+}
+
+.span-core-cs {
+  grid-column: span 4;
+}
+
+/* ==========================================================================
+   CATEGORY CARD COMPONENT
+   ========================================================================== */
+
+.skill-category-card {
+  position: relative;
   display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
+  flex-direction: column;
+  align-self: start;
+  height: auto;
+  padding: clamp(1.3rem, 1.8vw, 1.65rem);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 16px 38px -8px rgba(0, 0, 0, 0.55);
+  transform-style: preserve-3d;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: 
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.28s ease,
+    box-shadow 0.28s ease,
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.skill-badge {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.6rem 1.2rem;
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid var(--glass-border);
-  border-radius: 20px;
-  font-size: 0.9rem;
-  color: var(--text-color);
-  cursor: default;
-  transition: all 0.3s ease;
+.skills-editorial-section.is-revealed .skill-category-card {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: var(--stagger-delay, 0ms);
 }
 
-.skill-badge:hover {
-  border-color: var(--primary-neon);
-  box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
-  background: rgba(168, 85, 247, 0.1);
+.skill-category-card:hover {
+  transition: border-color 0.28s ease, box-shadow 0.28s ease;
+  will-change: transform;
 }
 
-.badge-dot {
+/* Top hairline highlight beam */
+.skill-category-card .card-top-beam {
+  position: absolute;
+  top: 0;
+  left: 15%;
+  right: 15%;
+  height: 1px;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0.42;
+  transition: opacity 0.3s ease, left 0.3s ease, right 0.3s ease;
+}
+
+.skill-category-card:hover .card-top-beam {
+  opacity: 0.95;
+  left: 8%;
+  right: 8%;
+}
+
+/* Architectural Corner Markers */
+.skill-category-card .card-corner-marker {
+  position: absolute;
   width: 8px;
   height: 8px;
+  border-style: solid;
+  pointer-events: none;
+  z-index: 3;
+  transition: border-color 0.25s ease;
+}
+
+.skill-category-card .card-corner-marker.top-left {
+  top: -1px;
+  left: -1px;
+  border-width: 2px 0 0 2px;
+  border-top-left-radius: var(--radius-lg);
+}
+
+.skill-category-card .card-corner-marker.bottom-right {
+  bottom: -1px;
+  right: -1px;
+  border-width: 0 2px 2px 0;
+  border-bottom-right-radius: var(--radius-lg);
+}
+
+/* Ambient Glare following pointer */
+.skill-category-card .card-ambient-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.skill-category-card:hover .card-ambient-glare {
+  opacity: 1;
+}
+
+/* Topbar Badge */
+.category-card-topbar {
+  transform: translateZ(12px);
+  transform-style: preserve-3d;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.65rem;
+  position: relative;
+  z-index: 2;
+}
+
+.category-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.52rem;
+  border-radius: var(--radius-sm);
+}
+
+.category-badge .category-icon {
+  font-size: 0.82rem;
+}
+
+/* Category Title */
+.category-card-title {
+  transform: translateZ(16px);
+  transform-style: preserve-3d;
+  color: #ffffff;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  margin-bottom: var(--space-4);
+  position: relative;
+  z-index: 2;
+}
+
+/* Skills Wrap & Pills */
+.category-skills-wrap {
+  transform: translateZ(10px);
+  transform-style: preserve-3d;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  position: relative;
+  z-index: 2;
+}
+
+.skill-item-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.42rem;
+  padding: 0.28rem 0.65rem;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  font-size: 0.74rem;
+  color: #cbd5e1;
+  letter-spacing: 0.02em;
+  white-space: normal;
+  word-break: normal;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.skill-item-pill:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.pill-indicator-dot {
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
-  background-color: var(--secondary-neon);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
 }
 
-.skill-badge:hover .badge-dot {
-  transform: scale(1.6);
-  box-shadow: 0 0 10px var(--secondary-neon);
+.skill-item-pill:hover .pill-indicator-dot {
+  transform: scale(1.25);
 }
 
-.section-header.center {
-  text-align: center;
+/* ==========================================================================
+   INDIVIDUAL ACCENT COLOR PALETTES (8 DISTINCT ACCENTS)
+   ========================================================================== */
+
+/* 1. Violet (01 — Programming Languages) */
+.card-violet {
+  background: linear-gradient(180deg, rgba(20, 16, 42, 0.88) 0%, rgba(7, 10, 24, 0.94) 100%);
+  border: 1px solid rgba(167, 139, 250, 0.2);
 }
 
-.mx-auto {
-  margin-left: auto;
-  margin-right: auto;
+.card-violet .card-top-beam {
+  background: linear-gradient(90deg, transparent, rgba(167, 139, 250, 0.8), transparent);
+}
+
+.card-violet .card-corner-marker {
+  border-color: rgba(167, 139, 250, 0.4);
+}
+
+.card-violet:hover {
+  border-color: rgba(167, 139, 250, 0.5);
+  box-shadow: 0 22px 48px -10px rgba(0, 0, 0, 0.68), 0 0 28px rgba(167, 139, 250, 0.14);
+}
+
+.card-violet:hover .card-corner-marker {
+  border-color: #a78bfa;
+}
+
+.card-violet .card-ambient-glare {
+  background: radial-gradient(420px circle at var(--mouse-x, 50%) var(--mouse-y, 0px), rgba(167, 139, 250, 0.12), transparent 60%);
+}
+
+.badge-violet {
+  background: rgba(167, 139, 250, 0.08);
+  border: 1px solid rgba(167, 139, 250, 0.24);
+  color: #a78bfa;
+}
+
+.card-violet .pill-indicator-dot {
+  background: #a78bfa;
+  box-shadow: 0 0 6px rgba(167, 139, 250, 0.7);
+}
+
+.card-violet .skill-item-pill:hover {
+  border-color: rgba(167, 139, 250, 0.35);
+}
+
+/* 2. Cyan (02 — Frontend & Mobile) */
+.card-cyan {
+  background: linear-gradient(180deg, rgba(8, 22, 44, 0.88) 0%, rgba(6, 11, 24, 0.94) 100%);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.card-cyan .card-top-beam {
+  background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.8), transparent);
+}
+
+.card-cyan .card-corner-marker {
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+.card-cyan:hover {
+  border-color: rgba(56, 189, 248, 0.5);
+  box-shadow: 0 22px 48px -10px rgba(0, 0, 0, 0.68), 0 0 28px rgba(56, 189, 248, 0.14);
+}
+
+.card-cyan:hover .card-corner-marker {
+  border-color: #38bdf8;
+}
+
+.card-cyan .card-ambient-glare {
+  background: radial-gradient(420px circle at var(--mouse-x, 50%) var(--mouse-y, 0px), rgba(56, 189, 248, 0.12), transparent 60%);
+}
+
+.badge-cyan {
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.24);
+  color: #38bdf8;
+}
+
+.card-cyan .pill-indicator-dot {
+  background: #38bdf8;
+  box-shadow: 0 0 6px rgba(56, 189, 248, 0.7);
+}
+
+.card-cyan .skill-item-pill:hover {
+  border-color: rgba(56, 189, 248, 0.35);
+}
+
+/* 3. Blue (03 — Backend & APIs) */
+.card-blue {
+  background: linear-gradient(180deg, rgba(10, 20, 46, 0.88) 0%, rgba(6, 12, 26, 0.94) 100%);
+  border: 1px solid rgba(96, 165, 250, 0.2);
+}
+
+.card-blue .card-top-beam {
+  background: linear-gradient(90deg, transparent, rgba(96, 165, 250, 0.8), transparent);
+}
+
+.card-blue .card-corner-marker {
+  border-color: rgba(96, 165, 250, 0.4);
+}
+
+.card-blue:hover {
+  border-color: rgba(96, 165, 250, 0.5);
+  box-shadow: 0 22px 48px -10px rgba(0, 0, 0, 0.68), 0 0 28px rgba(96, 165, 250, 0.14);
+}
+
+.card-blue:hover .card-corner-marker {
+  border-color: #60a5fa;
+}
+
+.card-blue .card-ambient-glare {
+  background: radial-gradient(420px circle at var(--mouse-x, 50%) var(--mouse-y, 0px), rgba(96, 165, 250, 0.12), transparent 60%);
+}
+
+.badge-blue {
+  background: rgba(96, 165, 250, 0.08);
+  border: 1px solid rgba(96, 165, 250, 0.24);
+  color: #60a5fa;
+}
+
+.card-blue .pill-indicator-dot {
+  background: #60a5fa;
+  box-shadow: 0 0 6px rgba(96, 165, 250, 0.7);
+}
+
+.card-blue .skill-item-pill:hover {
+  border-color: rgba(96, 165, 250, 0.35);
+}
+
+/* 4. Emerald (04 — Databases & Data Access) */
+.card-emerald {
+  background: linear-gradient(180deg, rgba(8, 26, 26, 0.88) 0%, rgba(6, 13, 19, 0.94) 100%);
+  border: 1px solid rgba(52, 211, 153, 0.2);
+}
+
+.card-emerald .card-top-beam {
+  background: linear-gradient(90deg, transparent, rgba(52, 211, 153, 0.8), transparent);
+}
+
+.card-emerald .card-corner-marker {
+  border-color: rgba(52, 211, 153, 0.4);
+}
+
+.card-emerald:hover {
+  border-color: rgba(52, 211, 153, 0.5);
+  box-shadow: 0 22px 48px -10px rgba(0, 0, 0, 0.68), 0 0 28px rgba(52, 211, 153, 0.14);
+}
+
+.card-emerald:hover .card-corner-marker {
+  border-color: #34d399;
+}
+
+.card-emerald .card-ambient-glare {
+  background: radial-gradient(420px circle at var(--mouse-x, 50%) var(--mouse-y, 0px), rgba(52, 211, 153, 0.12), transparent 60%);
+}
+
+.badge-emerald {
+  background: rgba(52, 211, 153, 0.08);
+  border: 1px solid rgba(52, 211, 153, 0.24);
+  color: #34d399;
+}
+
+.card-emerald .pill-indicator-dot {
+  background: #34d399;
+  box-shadow: 0 0 6px rgba(52, 211, 153, 0.7);
+}
+
+.card-emerald .skill-item-pill:hover {
+  border-color: rgba(52, 211, 153, 0.35);
+}
+
+/* 5. Teal (05 — AI & Applications) */
+.card-teal {
+  background: linear-gradient(180deg, rgba(8, 24, 30, 0.88) 0%, rgba(6, 12, 20, 0.94) 100%);
+  border: 1px solid rgba(45, 212, 191, 0.2);
+}
+
+.card-teal .card-top-beam {
+  background: linear-gradient(90deg, transparent, rgba(45, 212, 191, 0.8), transparent);
+}
+
+.card-teal .card-corner-marker {
+  border-color: rgba(45, 212, 191, 0.4);
+}
+
+.card-teal:hover {
+  border-color: rgba(45, 212, 191, 0.5);
+  box-shadow: 0 22px 48px -10px rgba(0, 0, 0, 0.68), 0 0 28px rgba(45, 212, 191, 0.14);
+}
+
+.card-teal:hover .card-corner-marker {
+  border-color: #2dd4bf;
+}
+
+.card-teal .card-ambient-glare {
+  background: radial-gradient(420px circle at var(--mouse-x, 50%) var(--mouse-y, 0px), rgba(45, 212, 191, 0.12), transparent 60%);
+}
+
+.badge-teal {
+  background: rgba(45, 212, 191, 0.08);
+  border: 1px solid rgba(45, 212, 191, 0.24);
+  color: #2dd4bf;
+}
+
+.card-teal .pill-indicator-dot {
+  background: #2dd4bf;
+  box-shadow: 0 0 6px rgba(45, 212, 191, 0.7);
+}
+
+.card-teal .skill-item-pill:hover {
+  border-color: rgba(45, 212, 191, 0.35);
+}
+
+/* 6. Amber (06 — Developer Tools & Testing) */
+.card-amber {
+  background: linear-gradient(180deg, rgba(28, 20, 12, 0.88) 0%, rgba(12, 10, 8, 0.94) 100%);
+  border: 1px solid rgba(251, 191, 36, 0.2);
+}
+
+.card-amber .card-top-beam {
+  background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.8), transparent);
+}
+
+.card-amber .card-corner-marker {
+  border-color: rgba(251, 191, 36, 0.4);
+}
+
+.card-amber:hover {
+  border-color: rgba(251, 191, 36, 0.5);
+  box-shadow: 0 22px 48px -10px rgba(0, 0, 0, 0.68), 0 0 28px rgba(251, 191, 36, 0.14);
+}
+
+.card-amber:hover .card-corner-marker {
+  border-color: #fbbf24;
+}
+
+.card-amber .card-ambient-glare {
+  background: radial-gradient(420px circle at var(--mouse-x, 50%) var(--mouse-y, 0px), rgba(251, 191, 36, 0.12), transparent 60%);
+}
+
+.badge-amber {
+  background: rgba(251, 191, 36, 0.08);
+  border: 1px solid rgba(251, 191, 36, 0.24);
+  color: #fbbf24;
+}
+
+.card-amber .pill-indicator-dot {
+  background: #fbbf24;
+  box-shadow: 0 0 6px rgba(251, 191, 36, 0.7);
+}
+
+.card-amber .skill-item-pill:hover {
+  border-color: rgba(251, 191, 36, 0.35);
+}
+
+/* 7. Indigo (07 — System Design & Infrastructure) */
+.card-indigo {
+  background: linear-gradient(180deg, rgba(16, 18, 44, 0.88) 0%, rgba(7, 10, 24, 0.94) 100%);
+  border: 1px solid rgba(129, 140, 248, 0.2);
+}
+
+.card-indigo .card-top-beam {
+  background: linear-gradient(90deg, transparent, rgba(129, 140, 248, 0.8), transparent);
+}
+
+.card-indigo .card-corner-marker {
+  border-color: rgba(129, 140, 248, 0.4);
+}
+
+.card-indigo:hover {
+  border-color: rgba(129, 140, 248, 0.5);
+  box-shadow: 0 22px 48px -10px rgba(0, 0, 0, 0.68), 0 0 28px rgba(129, 140, 248, 0.14);
+}
+
+.card-indigo:hover .card-corner-marker {
+  border-color: #818cf8;
+}
+
+.card-indigo .card-ambient-glare {
+  background: radial-gradient(420px circle at var(--mouse-x, 50%) var(--mouse-y, 0px), rgba(129, 140, 248, 0.12), transparent 60%);
+}
+
+.badge-indigo {
+  background: rgba(129, 140, 248, 0.08);
+  border: 1px solid rgba(129, 140, 248, 0.24);
+  color: #818cf8;
+}
+
+.card-indigo .pill-indicator-dot {
+  background: #818cf8;
+  box-shadow: 0 0 6px rgba(129, 140, 248, 0.7);
+}
+
+.card-indigo .skill-item-pill:hover {
+  border-color: rgba(129, 140, 248, 0.35);
+}
+
+/* 8. Purple (08 — Core Computer Science) */
+.card-purple {
+  background: linear-gradient(180deg, rgba(24, 14, 44, 0.88) 0%, rgba(10, 7, 24, 0.94) 100%);
+  border: 1px solid rgba(192, 132, 252, 0.2);
+}
+
+.card-purple .card-top-beam {
+  background: linear-gradient(90deg, transparent, rgba(192, 132, 252, 0.8), transparent);
+}
+
+.card-purple .card-corner-marker {
+  border-color: rgba(192, 132, 252, 0.4);
+}
+
+.card-purple:hover {
+  border-color: rgba(192, 132, 252, 0.5);
+  box-shadow: 0 22px 48px -10px rgba(0, 0, 0, 0.68), 0 0 28px rgba(192, 132, 252, 0.14);
+}
+
+.card-purple:hover .card-corner-marker {
+  border-color: #c084fc;
+}
+
+.card-purple .card-ambient-glare {
+  background: radial-gradient(420px circle at var(--mouse-x, 50%) var(--mouse-y, 0px), rgba(192, 132, 252, 0.12), transparent 60%);
+}
+
+.badge-purple {
+  background: rgba(192, 132, 252, 0.08);
+  border: 1px solid rgba(192, 132, 252, 0.24);
+  color: #c084fc;
+}
+
+.card-purple .pill-indicator-dot {
+  background: #c084fc;
+  box-shadow: 0 0 6px rgba(192, 132, 252, 0.7);
+}
+
+.card-purple .skill-item-pill:hover {
+  border-color: rgba(192, 132, 252, 0.35);
+}
+
+/* ==========================================================================
+   RESPONSIVENESS & ACCESSIBILITY (REDUCED MOTION)
+   ========================================================================== */
+
+@media (max-width: 1100px) {
+  .skills-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    align-items: start;
+    gap: var(--space-5);
+  }
+
+  .skills-cards-grid > *,
+  .skill-category-card,
+  .skills-tools-column-group {
+    grid-column: span 1 !important;
+    align-self: start;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    height: auto;
+    transform: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .skills-cards-grid {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: var(--space-4);
+  }
+
+  .skills-cards-grid > *,
+  .skill-category-card {
+    grid-column: span 1 !important;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  /* Flatten tools column group so its card and terminal participate directly in the mobile grid */
+  .skills-tools-column-group {
+    display: contents !important;
+  }
+
+  /* Keep all skill category cards (including Card 07 Infrastructure) in their natural sequence */
+  .skill-category-card {
+    order: 0;
+  }
+
+  /* Place developer.config.ts terminal artifact at the bottom of the section on mobile */
+  .skills-terminal-artifact {
+    order: 10 !important;
+    grid-column: span 1 !important;
+    width: 100%;
+    max-width: 100%;
+    margin: var(--space-3) auto 0 auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .skills-editorial-section {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+
+  .skills-main-title {
+    font-size: clamp(1.85rem, 6vw, 2.3rem);
+  }
+
+  .skills-subheading {
+    font-size: 0.82rem;
+  }
+
+  .skills-cards-grid {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: var(--space-4);
+  }
+
+  .skill-category-card {
+    grid-column: span 1 !important;
+    align-self: start;
+    height: auto;
+    padding: var(--space-5);
+  }
+
+  .skill-item-pill {
+    font-size: 0.74rem;
+    padding: 0.28rem 0.6rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .skills-editorial-section {
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-12);
+  }
+
+  .skill-category-card {
+    padding: 1.15rem 0.95rem;
+  }
+
+  .category-card-title {
+    font-size: 0.98rem;
+    margin-bottom: var(--space-3);
+  }
+
+  .category-skills-wrap {
+    gap: 0.32rem;
+  }
+
+  .skill-item-pill {
+    font-size: 0.68rem;
+    padding: 0.22rem 0.48rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skills-header-copy,
+  .skill-category-card {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .skills-3d-canvas-container {
+    opacity: 0.3;
+  }
 }

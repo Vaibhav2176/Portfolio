@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-scroll';
-import { FiMenu, FiX } from 'react-icons/fi';
+import { FiMenu, FiX, FiDownload } from 'react-icons/fi';
+import { personalInfo } from '../data/portfolioData';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -8,43 +9,51 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setNavScrolled(true);
-      } else {
-        setNavScrolled(false);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const isScrolled = window.scrollY > 40;
+          setNavScrolled((prev) => (prev !== isScrolled ? isScrolled : prev));
+          ticking = false;
+        });
+        ticking = true;
       }
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const navLinks = [
-    { name: 'Home', to: 'hero' },
+    { name: 'Overview', to: 'hero' },
     { name: 'About', to: 'about' },
     { name: 'Skills', to: 'skills' },
-    { name: 'Experience', to: 'experience' },
+    { name: 'Academics', to: 'academic' },
+    { name: 'Activity', to: 'activity' },
     { name: 'Projects', to: 'projects' },
     { name: 'Contact', to: 'contact' },
   ];
 
   return (
-    <header className={`navbar ${navScrolled ? 'scrolled glass-panel' : ''}`}>
+    <header className={`navbar ${navScrolled ? 'scrolled' : ''}`} role="banner">
       <div className="nav-container">
-        <div className="logo cursor-pointer gradient-text">
-          <Link to="hero" smooth={true} duration={500}>
+        
+        {/* Brandmark */}
+        <div className="logo cursor-pointer">
+          <Link to="hero" href="#hero" smooth={true} duration={500} aria-label="Vaibhav Amulani - Home">
             VAIBHAV.
           </Link>
         </div>
 
-        {/* Desktop Menu */}
-        <nav className="desktop-menu">
+        {/* Desktop Navigation */}
+        <nav className="desktop-menu" aria-label="Main Navigation">
           <ul>
             {navLinks.map((link) => (
               <li key={link.name}>
                 <Link
                   activeClass="active"
                   to={link.to}
+                  href={`#${link.to}`}
                   spy={true}
                   smooth={true}
                   offset={-70}
@@ -58,20 +67,39 @@ const Navbar = () => {
           </ul>
         </nav>
 
-        {/* Mobile Menu Toggle */}
-        <div className="mobile-toggle" onClick={() => setMenuOpen(!menuOpen)}>
-          {menuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+        {/* Desktop Quick Resume Download Action */}
+        <div className="nav-actions-desktop">
+          <a
+            href={personalInfo.resumePdf}
+            download="Vaibhav_Amulani_Resume.pdf"
+            className="btn btn-secondary nav-resume-btn font-mono"
+            aria-label="Download Vaibhav Amulani's Resume (PDF)"
+          >
+            <FiDownload /> Resume
+          </a>
         </div>
+
+        {/* Mobile Menu Toggle */}
+        <button
+          type="button"
+          className="mobile-toggle"
+          aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          {menuOpen ? <FiX size={22} /> : <FiMenu size={22} />}
+        </button>
       </div>
 
-      {/* Mobile Menu */}
-      <nav className={`mobile-menu ${menuOpen ? 'open glass-panel' : ''}`}>
+      {/* Mobile Menu Dropdown */}
+      <nav className={`mobile-menu ${menuOpen ? 'open' : ''}`} aria-label="Mobile Navigation">
         <ul>
           {navLinks.map((link) => (
             <li key={link.name}>
               <Link
                 activeClass="active"
                 to={link.to}
+                href={`#${link.to}`}
                 spy={true}
                 smooth={true}
                 offset={-70}
@@ -83,6 +111,16 @@ const Navbar = () => {
               </Link>
             </li>
           ))}
+          <li className="mobile-menu-action">
+            <a
+              href={personalInfo.resumePdf}
+              download="Vaibhav_Amulani_Resume.pdf"
+              className="btn btn-primary mobile-resume-btn font-mono"
+              aria-label="Download Vaibhav Amulani's Resume (PDF)"
+            >
+              <FiDownload /> Download Resume
+            </a>
+          </li>
         </ul>
       </nav>
     </header>

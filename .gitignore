@@ -32,3 +32,26 @@ dist-ssr
 
 # Vercel
 .vercel
+
+# Audit Evidence & Performance Traces
+reports/
+trace_baseline.json
+audit_*.json
+links_*.json
+master_audit_execution_results.json
+pdf_verification_results.json
+
+# Local Diagnostic & Ad-Hoc Audit Scripts
+scripts/audit_*.mjs
+scripts/capture_*.mjs
+scripts/diagnose_*.mjs
+scripts/test_*.mjs
+scripts/verify_deployment.mjs
+scripts/verify_hero_fix.mjs
+scripts/verify_scroll_reload.mjs
+scripts/verify_skills_terminal_order.mjs
+scripts/verify_targeted_refinements.mjs
+scripts/verify_user_inputs.mjs
+scripts/full_audit_suite.mjs
+scripts/master_audit_runner.mjs
+scripts/make-cutout.js

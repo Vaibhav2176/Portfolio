@@ -10,9 +10,10 @@ const Navbar = () => {
 
   useEffect(() => {
     let ticking = false;
+    let rafId = null;
     const handleScroll = () => {
       if (!ticking) {
-        window.requestAnimationFrame(() => {
+        rafId = window.requestAnimationFrame(() => {
           const isScrolled = window.scrollY > 40;
           setNavScrolled((prev) => (prev !== isScrolled ? isScrolled : prev));
           ticking = false;
@@ -21,7 +22,10 @@ const Navbar = () => {
       }
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafId) window.cancelAnimationFrame(rafId);
+    };
   }, []);
 
   const navLinks = [

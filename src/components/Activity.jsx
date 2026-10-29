@@ -368,11 +368,11 @@ const Activity = () => {
           {/* Quick Section Jump Navigation */}
           <div className="activity-nav-pills font-mono" role="navigation" aria-label="Activity sub-sections">
             <a href="#github-activity" className="activity-nav-pill pill-github">
-              <FiGithub className="nav-pill-icon text-emerald" />
+              <FiGithub className="nav-pill-icon text-emerald" aria-hidden="true" />
               <span>01 / GitHub Contribution Heatmap</span>
             </a>
             <a href="#leetcode-activity" className="activity-nav-pill pill-leetcode">
-              <SiLeetcode className="nav-pill-icon text-amber" />
+              <SiLeetcode className="nav-pill-icon text-amber" aria-hidden="true" />
               <span>02 / LeetCode Heatmap & Practice</span>
             </a>
           </div>

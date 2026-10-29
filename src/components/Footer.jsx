@@ -30,9 +30,10 @@ const Footer = () => {
 
   useEffect(() => {
     let ticking = false;
+    let rafId = null;
     const checkScrollTop = () => {
       if (!ticking) {
-        requestAnimationFrame(() => {
+        rafId = requestAnimationFrame(() => {
           const isOver = window.scrollY > 400;
           setShowScroll((prev) => (prev !== isOver ? isOver : prev));
           ticking = false;
@@ -41,7 +42,10 @@ const Footer = () => {
       }
     };
     window.addEventListener('scroll', checkScrollTop, { passive: true });
-    return () => window.removeEventListener('scroll', checkScrollTop);
+    return () => {
+      window.removeEventListener('scroll', checkScrollTop);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   const navSections = [

@@ -38,13 +38,12 @@ const getProgressStage = (val) => {
 };
 
 const LoadingScreen = ({ onFinish = null, onHandoffStart = null }) => {
-  // Initialize lazily to prevent even a single-frame flash if user has already seen the intro
+  // Initialize lazily; skip only on explicit reduced motion or test override
   const [isUnmounted, setIsUnmounted] = useState(() => {
     if (typeof window === 'undefined') return false;
-    const hasSeenIntro = sessionStorage.getItem('portfolio_intro_seen');
-    const isForced = window.location.search.includes('intro=true');
+    const isSkipped = window.location.search.includes('skip_intro=true');
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    return Boolean(((hasSeenIntro && !isForced) || prefersReducedMotion));
+    return Boolean(isSkipped || prefersReducedMotion);
   });
 
   const [progress, setProgress] = useState(0);
@@ -67,19 +66,18 @@ const LoadingScreen = ({ onFinish = null, onHandoffStart = null }) => {
   }, [onFinish, onHandoffStart]);
 
   useEffect(() => {
-    // Check session policy: skip if user already watched intro in this session or prefers reduced motion
-    const hasSeenIntro = sessionStorage.getItem('portfolio_intro_seen');
-    const isForced = window.location.search.includes('intro=true');
+    const isSkipped = window.location.search.includes('skip_intro=true');
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    if ((hasSeenIntro && !isForced) || prefersReducedMotion) {
+    if (isSkipped || prefersReducedMotion) {
       document.body.style.overflow = '';
       setIsUnmounted(true);
       if (onFinishRef.current) onFinishRef.current();
       return;
     }
 
-    // Lock background scroll during initial intro
+    // Ensure document starts at top and lock background scroll during intro
+    window.scrollTo(0, 0);
     document.body.style.overflow = 'hidden';
 
     const startTime = performance.now();
@@ -111,8 +109,6 @@ const LoadingScreen = ({ onFinish = null, onHandoffStart = null }) => {
 
       const prefersReducedMotion = typeof window !== 'undefined' &&
         window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      sessionStorage.setItem('portfolio_intro_seen', 'true');
 
       const targetEl = document.querySelector('.hero-name-first .hero-name-text') ||
                        document.querySelector('.hero-name-first');

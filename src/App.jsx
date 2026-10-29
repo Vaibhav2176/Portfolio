@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import LoadingScreen from './components/LoadingScreen';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -14,11 +14,18 @@ import './App.css';
 function App() {
   const [introState, setIntroState] = useState(() => {
     if (typeof window === 'undefined') return 'completed';
-    const hasSeenIntro = sessionStorage.getItem('portfolio_intro_seen');
-    const isForced = window.location.search.includes('intro=true');
+    const isSkipped = window.location.search.includes('skip_intro=true');
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    return ((hasSeenIntro && !isForced) || prefersReducedMotion) ? 'completed' : 'loading';
+    return (isSkipped || prefersReducedMotion) ? 'completed' : 'loading';
   });
+
+  // Ensure scroll restoration is manual and page starts at the top on initial load/reload
+  useEffect(() => {
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleHandoffStart = useCallback(() => {
     setIntroState('transitioning');
@@ -26,6 +33,7 @@ function App() {
 
   const handleIntroFinish = useCallback(() => {
     setIntroState('completed');
+    window.scrollTo(0, 0);
   }, []);
 
   return (

@@ -26,6 +26,11 @@ export default async function handler(req, res) {
               count
               submissions
             }
+            totalSubmissionNum {
+              difficulty
+              count
+              submissions
+            }
           }
           userCalendar {
             activeYears
@@ -70,15 +75,35 @@ export default async function handler(req, res) {
       });
     }
 
+    // Safely parse submissionCalendar string into an object
+    let parsedCalendar = {};
+    if (user.userCalendar?.submissionCalendar) {
+      if (typeof user.userCalendar.submissionCalendar === 'string') {
+        try {
+          parsedCalendar = JSON.parse(user.userCalendar.submissionCalendar);
+        } catch {
+          parsedCalendar = {};
+        }
+      } else if (typeof user.userCalendar.submissionCalendar === 'object') {
+        parsedCalendar = user.userCalendar.submissionCalendar;
+      }
+    }
+
+    const rawRanking = user.profile?.ranking;
+    const numericRanking = typeof rawRanking === 'number'
+      ? rawRanking
+      : (Number(String(rawRanking).replace(/,/g, '')) || null);
+
     return res.status(200).json({
       status: 'live',
       data: {
-        ranking: user.profile?.ranking ? user.profile.ranking.toLocaleString() : null,
+        ranking: Number.isFinite(numericRanking) && numericRanking > 0 ? numericRanking : null,
         submitStats: user.submitStats?.acSubmissionNum || [],
+        totalSubmitStats: user.submitStats?.totalSubmissionNum || [],
         calendar: {
           streak: user.userCalendar?.streak || 0,
           totalActiveDays: user.userCalendar?.totalActiveDays || 0,
-          submissionCalendar: user.userCalendar?.submissionCalendar || '{}'
+          submissionCalendar: parsedCalendar
         }
       }
     });

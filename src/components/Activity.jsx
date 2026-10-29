@@ -175,8 +175,8 @@ const Activity = () => {
   // Fetch or retrieve cached LeetCode statistics
   useEffect(() => {
     let isMounted = true;
-    const CACHE_KEY_LC_DATA = 'vaibhav_lc_data_v3';
-    const CACHE_KEY_LC_TIME = 'vaibhav_lc_time_v3';
+    const CACHE_KEY_LC_DATA = 'vaibhav_lc_data_v4';
+    const CACHE_KEY_LC_TIME = 'vaibhav_lc_time_v4';
     const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour TTL
 
     const loadLeetCodeData = async () => {
@@ -198,12 +198,46 @@ const Activity = () => {
           const json = await res.json();
           if (json.status === 'live' || json.status === 'cached' || json.status === 'stale') {
             const apiData = json.data || {};
+
+            // Safely parse submission calendar if passed as string or object
+            let parsedSubmissionCalendar = apiData.calendar?.submissionCalendar;
+            if (typeof parsedSubmissionCalendar === 'string') {
+              try {
+                parsedSubmissionCalendar = JSON.parse(parsedSubmissionCalendar);
+              } catch {
+                parsedSubmissionCalendar = {};
+              }
+            }
+
+            // Safely validate and parse ranking
+            let cleanRanking = null;
+            if (apiData.ranking !== undefined && apiData.ranking !== null) {
+              const r = typeof apiData.ranking === 'string'
+                ? Number(apiData.ranking.replace(/,/g, ''))
+                : Number(apiData.ranking);
+              if (Number.isFinite(r) && r > 0) cleanRanking = r;
+            }
+
+            // Total submissions from totalSubmitStats if available
+            let liveTotalSubmissions = initialLeetcode.calendar?.totalSubmissions || 297;
+            if (Array.isArray(apiData.totalSubmitStats)) {
+              const allTotal = apiData.totalSubmitStats.find(s => s.difficulty === 'All');
+              if (allTotal && typeof allTotal.submissions === 'number' && allTotal.submissions > 0) {
+                liveTotalSubmissions = allTotal.submissions;
+              }
+            }
+
             const updatedPayload = {
               ...initialLeetcode,
-              ranking: apiData.ranking || initialLeetcode.ranking,
+              ranking: cleanRanking || initialLeetcode.ranking,
               calendar: {
                 ...initialLeetcode.calendar,
-                ...(apiData.calendar || {})
+                streak: apiData.calendar?.streak || initialLeetcode.calendar?.streak || 34,
+                totalActiveDays: apiData.calendar?.totalActiveDays || initialLeetcode.calendar?.totalActiveDays || 58,
+                totalSubmissions: liveTotalSubmissions,
+                submissionCalendar: parsedSubmissionCalendar && Object.keys(parsedSubmissionCalendar).length > 0
+                  ? parsedSubmissionCalendar
+                  : initialLeetcode.calendar?.submissionCalendar
               }
             };
 
@@ -524,7 +558,15 @@ const Activity = () => {
                   <span>Global Ranking</span>
                 </span>
                 <span className="overview-metric-value font-mono">
-                  ~{Number(lcData.ranking || 1177654).toLocaleString()}
+                  {(() => {
+                    const rawRank = lcData.ranking;
+                    const cleanRank = typeof rawRank === 'string'
+                      ? Number(rawRank.replace(/,/g, ''))
+                      : Number(rawRank);
+                    return Number.isFinite(cleanRank) && cleanRank > 0
+                      ? `~${cleanRank.toLocaleString()}`
+                      : 'Unavailable';
+                  })()}
                 </span>
                 <span className="overview-metric-sub">
                   Verified LeetCode profile ranking

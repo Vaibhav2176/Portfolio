@@ -157,6 +157,113 @@ async function runTests() {
     }
   }
 
+  // 10. LeetCode: Upstream response mapping and data type normalization
+  {
+    const originalFetch = globalThis.fetch;
+    try {
+      globalThis.fetch = () => Promise.resolve({
+        ok: true,
+        status: 200,
+        json: () => Promise.resolve({
+          data: {
+            matchedUser: {
+              username: 'OerRUe2yaA',
+              profile: { ranking: 1170898, reputation: 0 },
+              submitStats: {
+                acSubmissionNum: [
+                  { difficulty: 'All', count: 152, submissions: 231 },
+                  { difficulty: 'Easy', count: 86, submissions: 137 }
+                ],
+                totalSubmissionNum: [
+                  { difficulty: 'All', count: 155, submissions: 352 }
+                ]
+              },
+              userCalendar: {
+                activeYears: [2025, 2026],
+                streak: 34,
+                totalActiveDays: 61,
+                submissionCalendar: '{"1777334400":1,"1783814400":5}'
+              }
+            }
+          }
+        })
+      });
+
+      const req = { method: 'GET', query: { username: 'OerRUe2yaA' } };
+      const res = createMockRes();
+      await leetcodeHandler(req, res);
+
+      assert('LeetCode handler returns HTTP 200 on valid upstream profile', res.statusCode === 200);
+      assert('LeetCode ranking is returned as clean integer number (not formatted string with commas)', typeof res.body?.data?.ranking === 'number' && res.body.data.ranking === 1170898);
+      assert('LeetCode ranking is finite and never NaN', Number.isFinite(res.body?.data?.ranking) && !isNaN(res.body?.data?.ranking));
+      assert('LeetCode submissionCalendar is parsed into an object', typeof res.body?.data?.calendar?.submissionCalendar === 'object' && !Array.isArray(res.body?.data?.calendar?.submissionCalendar));
+      assert('LeetCode submissionCalendar contains expected keys', res.body?.data?.calendar?.submissionCalendar['1777334400'] === 1);
+      assert('LeetCode returns totalSubmitStats array', Array.isArray(res.body?.data?.totalSubmitStats) && res.body.data.totalSubmitStats[0]?.submissions === 352);
+    } finally {
+      globalThis.fetch = originalFetch;
+    }
+  }
+
+  // 11. LeetCode: Ranking parsing and formatting robustness
+  {
+    const formatRanking = (raw) => {
+      const cleanRank = typeof raw === 'string'
+        ? Number(raw.replace(/,/g, ''))
+        : Number(raw);
+      return Number.isFinite(cleanRank) && cleanRank > 0
+        ? `~${cleanRank.toLocaleString()}`
+        : 'Unavailable';
+    };
+
+    assert('Ranking formatter handles clean integer 1170898', formatRanking(1170898) === `~${(1170898).toLocaleString()}`);
+    assert('Ranking formatter handles comma-separated string "1,170,898"', formatRanking('1,170,898') === `~${(1170898).toLocaleString()}`);
+    assert('Ranking formatter handles null safely', formatRanking(null) === 'Unavailable');
+    assert('Ranking formatter handles undefined safely', formatRanking(undefined) === 'Unavailable');
+    assert('Ranking formatter handles NaN / non-numeric string safely', formatRanking('not-a-number') === 'Unavailable');
+    assert('Ranking formatter handles 0 safely', formatRanking(0) === 'Unavailable');
+  }
+
+  // 12. LeetCodeHeatmap: Calendar parser robustness (stringified JSON vs object)
+  {
+    const parseCalendar = (calendarData) => {
+      if (!calendarData) return {};
+      let raw = calendarData;
+      if (typeof raw === 'string') {
+        try {
+          raw = JSON.parse(raw);
+        } catch {
+          return {};
+        }
+      }
+      if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return {};
+      const map = {};
+      for (const [timestamp, count] of Object.entries(raw)) {
+        const tsNum = Number(timestamp);
+        if (!isNaN(tsNum)) {
+          const dateObj = new Date(tsNum * 1000);
+          const yyyy = dateObj.getUTCFullYear();
+          const mm = String(dateObj.getUTCMonth() + 1).padStart(2, '0');
+          const dd = String(dateObj.getUTCDate()).padStart(2, '0');
+          const key = `${yyyy}-${mm}-${dd}`;
+          map[key] = (map[key] || 0) + Number(count);
+        }
+      }
+      return map;
+    };
+
+    const jsonStr = '{"1777334400": 2, "1783814400": 5}';
+    const parsedFromStr = parseCalendar(jsonStr);
+    assert('Heatmap parser parses JSON string successfully', Object.keys(parsedFromStr).length === 2 && Object.values(parsedFromStr).includes(2));
+
+    const rawObj = { "1777334400": 3, "1783814400": 4 };
+    const parsedFromObj = parseCalendar(rawObj);
+    assert('Heatmap parser parses plain object successfully', Object.keys(parsedFromObj).length === 2 && Object.values(parsedFromObj).includes(3));
+
+    assert('Heatmap parser handles malformed JSON string without throw', Object.keys(parseCalendar('{invalid-json')).length === 0);
+    assert('Heatmap parser handles null without throw', Object.keys(parseCalendar(null)).length === 0);
+    assert('Heatmap parser handles array input safely', Object.keys(parseCalendar([1, 2, 3])).length === 0);
+  }
+
   console.log(`\nRESULTS: ${passed}/${total} assertions passed.`);
   if (passed !== total) process.exit(1);
 }

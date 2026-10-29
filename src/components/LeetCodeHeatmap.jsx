@@ -16,6 +16,7 @@ const LeetCodeHeatmap = ({
   calendarData, 
   streak = 34, 
   totalActiveDays = 58, 
+  activeDays,
   totalSubmissions = 297,
   profileUrl = 'https://leetcode.com/u/OerRUe2yaA/',
   status = 'verified'
@@ -33,9 +34,18 @@ const LeetCodeHeatmap = ({
 
   // Parse authentic submission calendar into a date -> count map
   const subMap = useMemo(() => {
-    if (!calendarData || typeof calendarData !== 'object') return {};
+    if (!calendarData) return {};
+    let raw = calendarData;
+    if (typeof raw === 'string') {
+      try {
+        raw = JSON.parse(raw);
+      } catch {
+        return {};
+      }
+    }
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return {};
     const map = {};
-    for (const [timestamp, count] of Object.entries(calendarData)) {
+    for (const [timestamp, count] of Object.entries(raw)) {
       const tsNum = Number(timestamp);
       if (!isNaN(tsNum)) {
         const dateObj = new Date(tsNum * 1000);
@@ -193,7 +203,7 @@ const LeetCodeHeatmap = ({
     );
   }
 
-  const effectiveActiveDays = totalActiveDays || computedActiveDays;
+  const effectiveActiveDays = activeDays || totalActiveDays || computedActiveDays;
   const effectiveSubmissions = totalSubmissions || computedTotalSubmissions;
 
   return (

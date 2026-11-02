@@ -2,5 +2,5 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://vaibhavamulani.vercel.app/sitemap.xml
+Sitemap: https://www.vaibhavamulani.me/sitemap.xml
 

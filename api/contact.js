@@ -204,6 +204,8 @@ export default async function handler(req, res) {
   const allowedOrigins = [
     'http://localhost:5173',
     'http://localhost:3000',
+    'https://www.vaibhavamulani.me',
+    'https://vaibhavamulani.me',
     'https://vaibhavamulani.vercel.app'
   ];
   

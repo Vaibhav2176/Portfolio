@@ -2,7 +2,9 @@
 
 A production-grade developer portfolio built with **React 18**, **Vite**, and **Vercel Serverless Functions**. Features an authentic midnight-blue architectural theme (`#060a14`), 3D spatial canvas atmospheres powered by Three.js, live activity integrations with GitHub and LeetCode, verified project showcases, and a hardened contact API.
 
-**Production URL:** [https://vaibhavamulani.vercel.app](https://vaibhavamulani.vercel.app)
+**Production URL:** [https://www.vaibhavamulani.me](https://www.vaibhavamulani.me)<br />
+**Apex Domain:** [https://vaibhavamulani.me](https://vaibhavamulani.me) (Redirects to www via HTTP 308)<br />
+**Legacy Preview URL:** [https://vaibhavamulani.vercel.app](https://vaibhavamulani.vercel.app)
 
 ---
 
@@ -136,6 +138,8 @@ npm run build
 ## ☁️ Deployment
 
 The application is deployed on **Vercel** with automatic continuous deployment from the `main` branch.
+- **Primary Custom Domain:** `https://www.vaibhavamulani.me`
+- **Apex Domain:** `https://vaibhavamulani.me` (Configured with automated HTTP 308 permanent redirect to www)
 - Serverless endpoints in `api/` are automatically mapped to `/api/*`.
 - Static assets in `public/` are served with caching headers configured in `vercel.json`.
 - SPA client-side routing is handled via Vercel rewrites.

@@ -15,6 +15,8 @@ const port = process.env.PORT || 3000;
 const allowedOrigins = [
   'http://localhost:5173', // Local Vite
   'http://localhost:3000', // Local Server
+  'https://www.vaibhavamulani.me',
+  'https://vaibhavamulani.me',
   'https://vaibhavamulani.vercel.app'
 ];
 
